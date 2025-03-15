@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HR KPIs Categorized List</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f7fa;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .category {
+            margin-bottom: 25px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+        }
+        .category-title {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+        tr:hover {
+            background-color: #f1f5f9;
+        }
+        .search-container {
+            margin-bottom: 20px;
+        }
+        #searchInput {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .no-results {
+            padding: 20px;
+            text-align: center;
+            color: #666;
+            font-style: italic;
+        }
+        .stats {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+        .stat-box {
+            text-align: center;
+            padding: 10px;
+            min-width: 120px;
+        }
+        .stat-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #3498db;
+        }
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>HR KPIs Categorized List</h1>
+        
+        <div class="stats">
+            <div class="stat-box">
+                <div class="stat-number" id="totalKPIs">60</div>
+                <div class="stat-label">Total KPIs</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number" id="totalCategories">0</div>
+                <div class="stat-label">Categories</div>
+            </div>
+        </div>
+        
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Search KPIs by name...">
+        </div>
+        
+        <div id="kpiContent"></div>
+    </div>
+
+    <script>
+        // Sample KPI data (we'll populate this with actual data for the final version)
+        const kpiData = [
+            {
+                "Category": "Recruitment",
+                "KPI Name": "Time to Fill",
+                "Formula": "Average number of days between job posting and job acceptance",
+                "Relevance": "Measures efficiency of the recruitment process"
+            },
+            {
+                "Category": "Recruitment",
+                "KPI Name": "Cost per Hire",
+                "Formula": "Total recruitment costs / Number of hires",
+                "Relevance": "Measures the cost efficiency of the recruitment process"
+            },
+            {
+                "Category": "Recruitment",
+                "KPI Name": "Quality of Hire",
+                "Formula": "Performance rating of new hires after specific period",
+                "Relevance": "Measures effectiveness of the recruitment process"
+            },
+            {
+                "Category": "Recruitment",
+                "KPI Name": "Source Effectiveness",
+                "Formula": "Number of successful hires from each recruiting source",
+                "Relevance": "Identifies most effective recruiting channels"
+            },
+            {
+                "Category": "Recruitment",
+                "KPI Name": "Application Completion Rate",
+                "Formula": "(Number of completed applications / Number of started applications) × 100",
+                "Relevance": "Measures the effectiveness of the application process"
+            },
+            {
+                "Category": "Retention",
+                "KPI Name": "Employee Turnover Rate",
+                "Formula": "(Number of employees who left / Average number of employees) × 100",
+                "Relevance": "Indicates the percentage of employees leaving the company"
+            },
+            {
+                "Category": "Retention",
+                "KPI Name": "Voluntary Turnover Rate",
+                "Formula": "(Number of voluntary departures / Average number of employees) × 100",
+                "Relevance": "Indicates the percentage of employees leaving by choice"
+            },
+            {
+                "Category": "Retention",
+                "KPI Name": "Involuntary Turnover Rate",
+                "Formula": "(Number of involuntary departures / Average number of employees) × 100",
+                "Relevance": "Indicates the percentage of employees terminated by the company"
+            },
+            {
+                "Category": "Retention",
+                "KPI Name": "First Year Turnover Rate",
+                "Formula": "(Number of new hires leaving within first year / Number of new hires) × 100",
+                "Relevance": "Measures effectiveness of onboarding and initial employee experience"
+            },
+            {
+                "Category": "Retention",
+                "KPI Name": "Average Tenure",
+                "Formula": "Sum of all employee tenure years / Total number of employees",
+                "Relevance": "Indicates average length of employment"
+            },
+            {
+                "Category": "Performance",
+                "KPI Name": "Performance Distribution",
+                "Formula": "Percentage of employees in each performance rating category",
+                "Relevance": "Shows the distribution of performance across the organization"
+            },
+            {
+                "Category": "Performance",
+                "KPI Name": "Goal Completion Rate",
+                "Formula": "(Number of goals achieved / Total number of goals set) × 100",
+                "Relevance": "Measures achievement of set objectives"
+            },
+            {
+                "Category": "Performance",
+                "KPI Name": "Performance Improvement Rate",
+                "Formula": "Percentage of low performers who improved after intervention",
+                "Relevance": "Measures effectiveness of performance improvement plans"
+            },
+            {
+                "Category": "Performance",
+                "KPI Name": "Revenue per Employee",
+                "Formula": "Total revenue / Number of employees",
+                "Relevance": "Indicates employee productivity in revenue terms"
+            },
+            {
+                "Category": "Performance",
+                "KPI Name": "Profit per Employee",
+                "Formula": "Total profit / Number of employees",
+                "Relevance": "Indicates employee contribution to company profit"
+            },
+            {
+                "Category": "Training & Development",
+                "KPI Name": "Training Hours per Employee",
+                "Formula": "Total training hours / Number of employees",
+                "Relevance": "Measures investment in employee development"
+            },
+            {
+                "Category": "Training & Development",
+                "KPI Name": "Training Completion Rate",
+                "Formula": "(Number of completed trainings / Number of assigned trainings) × 100",
+                "Relevance": "Measures employee engagement with training programs"
+            },
+            {
+                "Category": "Training & Development",
+                "KPI Name": "Training ROI",
+                "Formula": "[(Benefits from training - Cost of training) / Cost of training] × 100",
+                "Relevance": "Measures return on investment in training"
+            },
+            {
+                "Category": "Training & Development",
+                "KPI Name": "Skill Gap Index",
+                "Formula": "Required skills score - Current skills score",
+                "Relevance": "Identifies areas for training and development"
+            },
+            {
+                "Category": "Training & Development",
+                "KPI Name": "Internal Promotion Rate",
+                "Formula": "(Number of internal promotions / Total number of promotions) × 100",
+                "Relevance": "Indicates effectiveness of development programs"
+            },
+            {
+                "Category": "Engagement",
+                "KPI Name": "Employee Engagement Score",
+                "Formula": "Average score from engagement survey",
+                "Relevance": "Measures overall employee engagement level"
+            },
+            {
+                "Category": "Engagement",
+                "KPI Name": "eNPS (Employee Net Promoter Score)",
+                "Formula": "Percentage of Promoters - Percentage of Detractors",
+                "Relevance": "Indicates likelihood of employees recommending the company"
+            },
+            {
+                "Category": "Engagement",
+                "KPI Name": "Absenteeism Rate",
+                "Formula": "(Number of absent days / Total workdays) × 100",
+                "Relevance": "Indicates potential engagement issues"
+            },
+            {
+                "Category": "Engagement",
+                "KPI Name": "Participation in Optional Activities",
+                "Formula": "(Number of participants / Total number of employees) × 100",
+                "Relevance": "Indicates engagement level beyond required duties"
+            },
+            {
+                "Category": "Engagement",
+                "KPI Name": "Suggestion Implementation Rate",
+                "Formula": "(Number of implemented suggestions / Total suggestions received) × 100",
+                "Relevance": "Measures employee involvement in improvement"
+            },
+            {
+                "Category": "Compensation & Benefits",
+                "KPI Name": "Compensation Ratio",
+                "Formula": "Company average compensation / Industry average compensation",
+                "Relevance": "Indicates competitiveness of compensation"
+            },
+            {
+                "Category": "Compensation & Benefits",
+                "KPI Name": "Benefits Utilization Rate",
+                "Formula": "(Number of employees using benefits / Total eligible employees) × 100",
+                "Relevance": "Measures effectiveness of benefits programs"
+            },
+            {
+                "Category": "Compensation & Benefits",
+                "KPI Name": "Compensation to Revenue Ratio",
+                "Formula": "Total compensation cost / Total revenue",
+                "Relevance": "Measures proportion of revenue spent on compensation"
+            },
+            {
+                "Category": "Compensation & Benefits",
+                "KPI Name": "Pay Gap Analysis",
+                "Formula": "Difference between highest and lowest salary within same job grade",
+                "Relevance": "Identifies potential compensation inequities"
+            },
+            {
+                "Category": "Compensation & Benefits",
+                "KPI Name": "Benefits Satisfaction Score",
+                "Formula": "Average score from benefits satisfaction survey",
+                "Relevance": "Measures employee satisfaction with benefits"
+            },
+            {
+                "Category": "Diversity & Inclusion",
+                "KPI Name": "Workforce Diversity Percentage",
+                "Formula": "(Number of employees in diverse categories / Total employees) × 100",
+                "Relevance": "Measures diversity representation in the workforce"
+            },
+            {
+                "Category": "Diversity & Inclusion",
+                "KPI Name": "Leadership Diversity Percentage",
+                "Formula": "(Number of diverse leaders / Total leaders) × 100",
+                "Relevance": "Measures diversity representation in leadership"
+            },
+            {
+                "Category": "Diversity & Inclusion",
+                "KPI Name": "Pay Equity Ratio",
+                "Formula": "Average pay of minority groups / Average pay of non-minority groups",
+                "Relevance": "Identifies potential pay discrimination"
+            },
+            {
+                "Category": "Diversity & Inclusion",
+                "KPI Name": "Inclusion Score",
+                "Formula": "Average score from inclusion survey questions",
+                "Relevance": "Measures feeling of inclusion among employees"
+            },
+            {
+                "Category": "Diversity & Inclusion",
+                "KPI Name": "Diversity Hiring Rate",
+                "Formula": "(Number of diverse candidates hired / Total number of hires) × 100",
+                "Relevance": "Measures diversity in recruitment"
+            },
+            {
+                "Category": "HR Operations",
+                "KPI Name": "HR to Employee Ratio",
+                "Formula": "Number of HR staff / Total number of employees",
+                "Relevance": "Measures HR department efficiency"
+            },
+            {
+                "Category": "HR Operations",
+                "KPI Name": "HR Expense per Employee",
+                "Formula": "Total HR expenses / Number of employees",
+                "Relevance": "Measures cost efficiency of HR function"
+            },
+            {
+                "Category": "HR Operations",
+                "KPI Name": "Time to Resolve HR Tickets",
+                "Formula": "Average time between ticket creation and resolution",
+                "Relevance": "Measures HR responsiveness"
+            },
+            {
+                "Category": "HR Operations",
+                "KPI Name": "HR Self-Service Usage Rate",
+                "Formula": "(Number of self-service transactions / Total HR transactions) × 100",
+                "Relevance": "Measures adoption of HR self-service tools"
+            },
+            {
+                "Category": "HR Operations",
+                "KPI Name": "HR SLA Compliance Rate",
+                "Formula": "(Number of SLAs met / Total number of SLAs) × 100",
+                "Relevance": "Measures HR service delivery effectiveness"
+            },
+            {
+                "Category": "Health & Safety",
+                "KPI Name": "Incident Rate",
+                "Formula": "(Number of incidents × 200,000) / Total hours worked",
+                "Relevance": "Measures workplace safety"
+            },
+            {
+                "Category": "Health & Safety",
+                "KPI Name": "Lost Time Injury Frequency Rate",
+                "Formula": "(Number of lost time injuries × 1,000,000) / Total hours worked",
+                "Relevance": "Measures frequency of serious injuries"
+            },
+            {
+                "Category": "Health & Safety",
+                "KPI Name": "Safety Training Completion Rate",
+                "Formula": "(Number of employees completed safety training / Total employees) × 100",
+                "Relevance": "Measures safety training effectiveness"
+            },
+            {
+                "Category": "Health & Safety",
+                "KPI Name": "Health Program Participation Rate",
+                "Formula": "(Number of employees in health programs / Total employees) × 100",
+                "Relevance": "Measures engagement with health initiatives"
+            },
+            {
+                "Category": "Health & Safety",
+                "KPI Name": "Workers' Compensation Cost",
+                "Formula": "Total workers' compensation costs per year",
+                "Relevance": "Measures financial impact of workplace injuries"
+            },
+            {
+                "Category": "Culture",
+                "KPI Name": "Cultural Alignment Score",
+                "Formula": "Average score from culture assessment survey",
+                "Relevance": "Measures alignment between employees and company values"
+            },
+            {
+                "Category": "Culture",
+                "KPI Name": "Values Adoption Rate",
+                "Formula": "Percentage of employees demonstrating company values",
+                "Relevance": "Measures integration of values into daily work"
+            },
+            {
+                "Category": "Culture",
+                "KPI Name": "Cultural Diversity Index",
+                "Formula": "Composite measure of various cultural aspects diversity",
+                "Relevance": "Measures diversity of thought and culture"
+            },
+            {
+                "Category": "Culture",
+                "KPI Name": "Psychological Safety Score",
+                "Formula": "Average score from psychological safety survey questions",
+                "Relevance": "Measures feeling of safety to express ideas"
+            },
+            {
+                "Category": "Culture",
+                "KPI Name": "Culture Net Promoter Score",
+                "Formula": "Percentage of culture promoters - Percentage of culture detractors",
+                "Relevance": "Measures advocacy of company culture"
+            },
+            {
+                "Category": "Productivity",
+                "KPI Name": "Revenue per FTE",
+                "Formula": "Total revenue / Number of full-time equivalent employees",
+                "Relevance": "Measures productivity in revenue terms"
+            },
+            {
+                "Category": "Productivity",
+                "KPI Name": "Output per Hour",
+                "Formula": "Total output / Total hours worked",
+                "Relevance": "Measures efficiency of work hours"
+            },
+            {
+                "Category": "Productivity",
+                "KPI Name": "Overtime Hours Percentage",
+                "Formula": "(Total overtime hours / Total standard hours) × 100",
+                "Relevance": "Indicates potential workload issues"
+            },
+            {
+                "Category": "Productivity",
+                "KPI Name": "Project Completion Rate",
+                "Formula": "(Number of projects completed on time / Total projects) × 100",
+                "Relevance": "Measures project delivery efficiency"
+            },
+            {
+                "Category": "Productivity",
+                "KPI Name": "Utilization Rate",
+                "Formula": "(Billable hours / Total available hours) × 100",
+                "Relevance": "Measures effective use of available time"
+            },
+            {
+                "Category": "Leadership",
+                "KPI Name": "Leadership Effectiveness Index",
+                "Formula": "Average score from leadership assessment",
+                "Relevance": "Measures effectiveness of leadership"
+            },
+            {
+                "Category": "Leadership",
+                "KPI Name": "Leadership Trust Score",
+                "Formula": "Average score from leadership trust survey questions",
+                "Relevance": "Measures trust in leadership"
+            },
+            {
+                "Category": "Leadership",
+                "KPI Name": "Leadership Development Completion Rate",
+                "Formula": "(Number of leaders completing development programs / Total leaders) × 100",
+                "Relevance": "Measures investment in leadership growth"
+            },
+            {
+                "Category": "Leadership",
+                "KPI Name": "Succession Planning Coverage",
+                "Formula": "(Number of key positions with succession plans / Total key positions) × 100",
+                "Relevance": "Measures preparedness for leadership transitions"
+            },
+            {
+                "Category": "Leadership",
+                "KPI Name": "Leader Turnover Rate",
+                "Formula": "(Number of leaders who left / Average number of leaders) × 100",
+                "Relevance": "Measures stability of leadership"
+            }
+        ];
+
+        // Function to group data by category
+        function groupByCategory(data) {
+            const grouped = {};
+            
+            data.forEach(item => {
+                const category = item.Category || 'Uncategorized';
+                if (!grouped[category]) {
+                    grouped[category] = [];
+                }
+                grouped[category].push(item);
+            });
+            
+            return grouped;
+        }
+
+        // Function to render the KPI tables
+        function renderKPITables(groupedData) {
+            const container = document.getElementById('kpiContent');
+            container.innerHTML = '';
+            
+            // Check if there are any results
+            const totalItems = Object.values(groupedData).reduce((total, items) => total + items.length, 0);
+            
+            if (totalItems === 0) {
+                container.innerHTML = '<div class="no-results">No KPIs found matching your search criteria.</div>';
+                return;
+            }
+            
+            // Sort categories alphabetically
+            Object.keys(groupedData).sort().forEach(category => {
+                const categoryDiv = document.createElement('div');
+                categoryDiv.className = 'category';
+                
+                const categoryTitle = document.createElement('h2');
+                categoryTitle.className = 'category-title';
+                categoryTitle.textContent = category;
+                categoryDiv.appendChild(categoryTitle);
+                
+                const table = document.createElement('table');
+                const headerRow = document.createElement('tr');
+                
+                ['KPI Name', 'Formula', 'Relevance'].forEach(header => {
+                    const th = document.createElement('th');
+                    th.textContent = header;
+                    headerRow.appendChild(th);
+                });
+                
+                const thead = document.createElement('thead');
+                thead.appendChild(headerRow);
+                table.appendChild(thead);
+                
+                const tbody = document.createElement('tbody');
+                groupedData[category].forEach(item => {
+                    const row = document.createElement('tr');
+                    
+                    ['KPI Name', 'Formula', 'Relevance'].forEach(field => {
+                        const td = document.createElement('td');
+                        td.textContent = item[field] || '';
+                        row.appendChild(td);
+                    });
+                    
+                    tbody.appendChild(row);
+                });
+                
+                table.appendChild(tbody);
+                categoryDiv.appendChild(table);
+                container.appendChild(categoryDiv);
+            });
+        }
+
+        // Function to handle search
+        function setupSearch() {
+            const searchInput = document.getElementById('searchInput');
+            
+            searchInput.addEventListener('input', (e) => {
+                const searchTerm = e.target.value.toLowerCase();
+                
+                if (searchTerm.length === 0) {
+                    renderKPITables(groupByCategory(kpiData));
+                    return;
+                }
+                
+                const filteredData = kpiData.filter(item => 
+                    (item['KPI Name'] && item['KPI Name'].toLowerCase().includes(searchTerm))
+                );
+                
+                renderKPITables(groupByCategory(filteredData));
+            });
+        }
+
+        // Function to update stats
+        function updateStats() {
+            document.getElementById('totalKPIs').textContent = kpiData.length;
+            
+            const categories = new Set(kpiData.map(item => item.Category));
+            document.getElementById('totalCategories').textContent = categories.size;
+        }
+
+        // Initialize the application
+        function init() {
+            updateStats();
+            setupSearch();
+            renderKPITables(groupByCategory(kpiData));
+        }
+
+        // Start the application when the page loads
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

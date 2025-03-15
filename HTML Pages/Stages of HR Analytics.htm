@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Four Stages of HR Analytics</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --color-bg: #f5f7fa;
+            --color-text: #2d3748;
+            --color-primary: #63b3ed;
+            --color-secondary: #90cdf4;
+            --color-accent1: #ffc857;
+            --color-accent2: #f56565;
+            --color-stage1: #4fd1c5;
+            --color-stage2: #63b3ed;
+            --color-stage3: #7f9cf5;
+            --color-stage4: #9f7aea;
+        }
+        
+        body {
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            padding: 2rem;
+            aspect-ratio: 16/9;
+            max-height: 100vh;
+            max-width: calc(100vh * 16/9);
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(90deg, var(--color-stage1), var(--color-stage4));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
+            text-shadow: 0px 0px 1px rgba(0,0,0,0.1);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.8;
+        }
+        
+        .stages-container {
+            display: flex;
+            flex: 1;
+            gap: 1.5rem;
+            align-items: stretch;
+        }
+        
+        .stage {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .stage:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stage:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+        }
+        
+        .stage:nth-child(1):before {
+            background: var(--color-stage1);
+        }
+        
+        .stage:nth-child(2):before {
+            background: var(--color-stage2);
+        }
+        
+        .stage:nth-child(3):before {
+            background: var(--color-stage3);
+        }
+        
+        .stage:nth-child(4):before {
+            background: var(--color-stage4);
+        }
+        
+        .stage-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .stage-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            opacity: 0.2;
+            margin-right: 0.5rem;
+        }
+        
+        .stage-title-container {
+            flex: 1;
+        }
+        
+        .stage-title {
+            font-size: 1.4rem;
+            margin-bottom: 0.2rem;
+        }
+        
+        .stage-subtitle {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            font-style: italic;
+        }
+        
+
+        
+        .stage-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .examples-title {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+            opacity: 0.6;
+        }
+        
+        .examples-list {
+            list-style-type: none;
+            margin-bottom: 1rem;
+        }
+        
+        .examples-list li {
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+            opacity: 0.9;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .examples-list li:before {
+            content: '•';
+            margin-right: 0.5rem;
+        }
+        
+        .applications-title {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+            opacity: 0.6;
+        }
+        
+        .applications {
+            font-size: 0.95rem;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+        
+        .stage:nth-child(1) .stage-title,
+        .stage:nth-child(1) .examples-title,
+        .stage:nth-child(1) .applications-title {
+            color: var(--color-stage1);
+        }
+        
+        .stage:nth-child(2) .stage-title,
+        .stage:nth-child(2) .examples-title,
+        .stage:nth-child(2) .applications-title {
+            color: var(--color-stage2);
+        }
+        
+        .stage:nth-child(3) .stage-title,
+        .stage:nth-child(3) .examples-title,
+        .stage:nth-child(3) .applications-title {
+            color: var(--color-stage3);
+        }
+        
+        .stage:nth-child(4) .stage-title,
+        .stage:nth-child(4) .examples-title,
+        .stage:nth-child(4) .applications-title {
+            color: var(--color-stage4);
+        }
+        
+        .particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+        
+        @media (max-width: 1200px) {
+            .stages-container {
+                flex-wrap: wrap;
+            }
+            
+            .stage {
+                flex: 1 1 calc(50% - 1.5rem);
+                min-width: calc(50% - 1.5rem);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .stage {
+                flex: 1 1 100%;
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="particles-js" class="particles-js"></div>
+    <div class="container">
+        <header>
+            <h1>The Four Stages of HR Analytics</h1>
+            <p class="subtitle">A progression from reporting to strategic decision-making</p>
+        </header>
+        
+        <div class="stages-container">
+            <div class="stage">
+                <div class="stage-header">
+                    <div class="stage-number">1</div>
+                    <div class="stage-title-container">
+                        <h2 class="stage-title">Descriptive Analytics</h2>
+                        <p class="stage-subtitle">What happened?</p>
+                    </div>
+
+                </div>
+                <div class="stage-content">
+                    <h3 class="examples-title">Examples</h3>
+                    <ul class="examples-list">
+                        <li>Employee turnover rates</li>
+                        <li>Absenteeism patterns</li>
+                        <li>Compensation distribution</li>
+                        <li>Demographic breakdowns</li>
+                    </ul>
+                    <h3 class="applications-title">HR Applications</h3>
+                    <p class="applications">
+                        Creating dashboards showing headcount trends, monitoring diversity metrics, or tracking recruitment funnel conversion rates
+                    </p>
+                </div>
+            </div>
+            
+            <div class="stage">
+                <div class="stage-header">
+                    <div class="stage-number">2</div>
+                    <div class="stage-title-container">
+                        <h2 class="stage-title">Diagnostic Analytics</h2>
+                        <p class="stage-subtitle">Why did it happen?</p>
+                    </div>
+
+                </div>
+                <div class="stage-content">
+                    <h3 class="examples-title">Examples</h3>
+                    <ul class="examples-list">
+                        <li>Correlation between engagement scores and turnover</li>
+                        <li>Identifying factors that impact time-to-hire</li>
+                        <li>Performance drivers analysis</li>
+                        <li>Compensation equity studies</li>
+                    </ul>
+                    <h3 class="applications-title">HR Applications</h3>
+                    <p class="applications">
+                        Determining why certain departments experience higher turnover, understanding what drives employee satisfaction scores
+                    </p>
+                </div>
+            </div>
+            
+            <div class="stage">
+                <div class="stage-header">
+                    <div class="stage-number">3</div>
+                    <div class="stage-title-container">
+                        <h2 class="stage-title">Predictive Analytics</h2>
+                        <p class="stage-subtitle">What will happen?</p>
+                    </div>
+
+                </div>
+                <div class="stage-content">
+                    <h3 class="examples-title">Examples</h3>
+                    <ul class="examples-list">
+                        <li>Flight risk modeling</li>
+                        <li>Forecasting future talent needs</li>
+                        <li>Predicting candidates likely to succeed</li>
+                        <li>Performance trajectory modeling</li>
+                    </ul>
+                    <h3 class="applications-title">HR Applications</h3>
+                    <p class="applications">
+                        Creating early warning systems for potential turnover, predicting which employees might be ready for promotion
+                    </p>
+                </div>
+            </div>
+            
+            <div class="stage">
+                <div class="stage-header">
+                    <div class="stage-number">4</div>
+                    <div class="stage-title-container">
+                        <h2 class="stage-title">Prescriptive Analytics</h2>
+                        <p class="stage-subtitle">What should we do?</p>
+                    </div>
+
+                </div>
+                <div class="stage-content">
+                    <h3 class="examples-title">Examples</h3>
+                    <ul class="examples-list">
+                        <li>Personalized development recommendations</li>
+                        <li>Optimized compensation modeling</li>
+                        <li>AI-powered workforce planning</li>
+                        <li>Intervention effectiveness simulation</li>
+                    </ul>
+                    <h3 class="applications-title">HR Applications</h3>
+                    <p class="applications">
+                        Suggesting targeted retention strategies for at-risk employees, recommending optimal interview panel composition for different roles
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // Wait for DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Info icons and tooltips have been removed
+        });
+        
+        // ParticlesJS configuration
+        particlesJS("particles-js", {
+            "particles": {
+                "number": {
+                    "value": 80,
+                    "density": {
+                        "enable": true,
+                        "value_area": 800
+                    }
+                },
+                "color": {
+                    "value": "#ffffff"
+                },
+                "shape": {
+                    "type": "circle",
+                    "stroke": {
+                        "width": 0,
+                        "color": "#000000"
+                    },
+                    "polygon": {
+                        "nb_sides": 5
+                    }
+                },
+                "opacity": {
+                    "value": 0.1,
+                    "random": true,
+                    "anim": {
+                        "enable": true,
+                        "speed": 1,
+                        "opacity_min": 0.1,
+                        "sync": false
+                    }
+                },
+                "size": {
+                    "value": 3,
+                    "random": true,
+                    "anim": {
+                        "enable": false,
+                        "speed": 40,
+                        "size_min": 0.1,
+                        "sync": false
+                    }
+                },
+                "line_linked": {
+                    "enable": true,
+                    "distance": 150,
+                    "color": "#ffffff",
+                    "opacity": 0.1,
+                    "width": 1
+                },
+                "move": {
+                    "enable": true,
+                    "speed": 2,
+                    "direction": "none",
+                    "random": false,
+                    "straight": false,
+                    "out_mode": "out",
+                    "bounce": false,
+                    "attract": {
+                        "enable": false,
+                        "rotateX": 600,
+                        "rotateY": 1200
+                    }
+                }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": {
+                    "onhover": {
+                        "enable": true,
+                        "mode": "grab"
+                    },
+                    "onclick": {
+                        "enable": true,
+                        "mode": "push"
+                    },
+                    "resize": true
+                },
+                "modes": {
+                    "grab": {
+                        "distance": 140,
+                        "line_linked": {
+                            "opacity": 0.5
+                        }
+                    },
+                    "bubble": {
+                        "distance": 400,
+                        "size": 40,
+                        "duration": 2,
+                        "opacity": 8,
+                        "speed": 3
+                    },
+                    "repulse": {
+                        "distance": 200,
+                        "duration": 0.4
+                    },
+                    "push": {
+                        "particles_nb": 4
+                    },
+                    "remove": {
+                        "particles_nb": 2
+                    }
+                }
+            },
+            "retina_detect": true
+        });
+    </script>
+</body>
+</html>

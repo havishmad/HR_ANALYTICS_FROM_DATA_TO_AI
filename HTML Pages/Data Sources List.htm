@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HR Analytics Data Sources</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --success: #2ecc71;
+            --warning: #f39c12;
+            --info: #3498db;
+            --text: #333333;
+            --light-text: #7f8c8d;
+            --border: #ddd;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background-color: var(--light);
+            padding: 0;
+            margin: 0;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 60px 0 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+            text-align: center;
+        }
+        
+        h2 {
+            font-size: 1.8rem;
+            margin: 30px 0 20px;
+            color: var(--primary);
+            border-bottom: 2px solid var(--secondary);
+            padding-bottom: 10px;
+        }
+        
+        h3 {
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+            color: var(--secondary);
+        }
+
+        .subtitle {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+        
+        .data-source-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .data-source-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .data-source-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-header {
+            background-color: var(--primary);
+            color: white;
+            padding: 15px 20px;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .card-body {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .card-footer {
+            background-color: rgba(0, 0, 0, 0.03);
+            padding: 15px 20px;
+            border-top: 1px solid var(--border);
+        }
+        
+        .description {
+            margin-bottom: 15px;
+            flex-grow: 1;
+        }
+        
+        .data-list, .applications-list, .metrics-list {
+            margin-bottom: 15px;
+        }
+        
+        .data-list h4, .applications-list h4, .metrics-list h4 {
+            color: var(--secondary);
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+        
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        
+        li {
+            margin-bottom: 6px;
+            position: relative;
+            padding-left: 20px;
+        }
+        
+        li:before {
+            content: "•";
+            color: var(--secondary);
+            font-size: 1.2em;
+            position: absolute;
+            left: 0;
+            top: -2px;
+        }
+        
+        .challenges-section, .emerging-section {
+            background-color: white;
+            border-radius: 8px;
+            padding: 30px;
+            margin: 40px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .tag {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            background-color: var(--secondary);
+            color: white;
+        }
+        
+        .traditional {
+            background-color: var(--info);
+        }
+        
+        .operational {
+            background-color: var(--success);
+        }
+        
+        .strategic {
+            background-color: var(--warning);
+        }
+        
+        .emerging {
+            background-color: var(--accent);
+        }
+        
+        footer {
+            background-color: var(--primary);
+            color: white;
+            padding: 30px 0;
+            margin-top: 60px;
+            text-align: center;
+        }
+        
+        .search-container {
+            max-width: 600px;
+            margin: 20px auto;
+            position: relative;
+        }
+        
+        #searchInput {
+            width: 100%;
+            padding: 12px 20px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        #searchInput:focus {
+            outline: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        
+        .filter-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .filter-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 20px;
+            background-color: white;
+            color: var(--primary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .filter-btn:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .filter-btn.active {
+            background-color: var(--secondary);
+            color: white;
+        }
+        
+        .introduction {
+            background-color: white;
+            border-radius: 8px;
+            padding: 30px;
+            margin: 0 0 40px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .data-source-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .filter-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>HR Analytics Common Data Sources</h1>
+            
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Search for HR data sources...">
+            </div>
+            
+            <div class="filter-container">
+                <button class="filter-btn active" data-filter="all">All Sources</button>
+                <button class="filter-btn" data-filter="traditional">Traditional</button>
+                <button class="filter-btn" data-filter="operational">Operational</button>
+                <button class="filter-btn" data-filter="strategic">Strategic</button>
+                <button class="filter-btn" data-filter="emerging">Emerging</button>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <section class="introduction">
+            <h2>Understanding HR Analytics Data Sources</h2>
+            <p>Human Resources analytics relies on diverse data sources to provide insights into workforce dynamics, employee performance, and organizational health. This guide explores the various data sources used in HR analytics, their applications, and the metrics they generate.</p>
+            <p>Modern HR departments leverage these data sources to make data-driven decisions about recruitment, retention, performance management, and strategic workforce planning. Understanding these sources is essential for business leaders and HR professionals looking to harness the power of analytics.</p>
+        </section>
+        
+        <div class="data-source-grid" id="dataSourceGrid">
+            <!-- HRIS -->
+            <div class="data-source-card" data-category="traditional operational">
+                <div class="card-header">HRIS (Human Resources Information System)</div>
+                <div class="card-body">
+                    <div class="description">
+                        <p>Core HR system that stores employee master data and serves as the system of record for HR.</p>
+                    </div>
+                    <div class="data-list">
+                        <h4>Examples of Data:</h4>
+                        <ul>
+                            <li>Employee demographics</li>
+                            <li>Compensation history</li>
+                            <li>Job history</li>
+                            <li>Organizational structure</li>
+                        </ul>
+                    </div>
+                    <div class="applications-list">
+                        <h4>Analytics Applications:</h4>
+                        <ul>
+                            <li>Workforce planning</li>
+                            <li>Diversity analysis</li>
+                            <li>Compensation analysis</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="metrics-list">
+                        <h4>Key Metrics:</h4>
+                        <ul>
+                            <li>Headcount trends</li>
+                            <li>Demographic distribution</li>
+                            <li>Compensation equity</li>
+                        </ul>
+                    </div>
+                    <div class="tags">
+                        <span class="tag traditional">Traditional</span>
+                        <span class="tag operational">Operational</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ATS -->
+            <div class="data-source-card" data-category="traditional operational">
+                <div class="card-header">Applicant Tracking Systems (ATS)</div>
+                <div class="card-body">
+                    <div class="description">
+                        <p>Manages recruitment and hiring processes from job posting to onboarding.</p>
+                    </div>
+                    <div class="data-list">
+                        <h4>Examples of Data:</h4>
+                        <ul>
+                            <li>Candidate profiles</li>
+                            <li>Application data</li>
+                            <li>Source of hire</li>
+                            <li>Time-to-fill</li>
+                            <li>Interview feedback</li>
+                        </ul>
+                    </div>
+                    <div class="applications-list">
+                        <h4>Analytics Applications:</h4>
+                        <ul>
+                            <li>Recruitment effectiveness</li>
+                            <li>Candidate sourcing optimization</li>
+                            <li>Hiring process efficiency</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="metrics-list">
+                        <h4>Key Metrics:</h4>
+                        <ul>
+                            <li>Cost-per-hire</li>
+                            <li>Time-to-fill</li>
+                            <li>Source effectiveness</li>
+                            <li>Candidate conversion rates</li>
+                        </ul>
+                    </div>
+                    <div class="tags">
+                        <span class="tag traditional">Traditional</span>
+                        <span class="tag operational">Operational</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Performance Management Systems -->
+            <div class="data-source-card" data-category="traditional strategic">
+                <div class="card-header">Performance Management Systems</div>
+                <div class="card-body">
+                    <div class="description">
+                        <p>Tracks employee performance reviews, goals, and development plans.</p>
+                    </div>
+                    <div class="data-list">
+                        <h4>Examples of Data:</h4>
+                        <ul>
+                            <li>Performance ratings</li>
+                            <li>Goal achievement data</li>
+                            <li>Competency assessments</li>
+                            <li>Manager feedback</li>
+                        </ul>
+                    </div>
+                    <div class="applications-list">
+                        <h4>Analytics Applications:</h4>
+                        <ul>
+                            <li>Performance prediction</li>
+                            <li>High-performer analysis</li>
+                            <li>Competency gap identification</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="metrics-list">
+                        <h4>Key Metrics:</h4>
+                        <ul>
+                            <li>Performance distribution</li>
+                            <li>Rating consistency</li>
+                            <li>Performance trends</li>
+                        </ul>
+                    </div>
+                    <div class="tags">
+                        <span class="tag traditional">Traditional</span>
+                        <span class="tag strategic">Strategic</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Learning Management Systems -->
+            <div class="data-source-card" data-category="traditional operational">
+                <div class="card-header">Learning Management Systems (LMS)</div>
+                <div class="card-body">
+                    <div class="description">
+                        <p>Manages training and development activities across the organization.</p>
+                    </div>
+                    <div class="data-list">
+                        <h4>Examples of Data:</h4>
+                        <ul>
+                            <li>Course completion data</li>
+                            <li>Training hours</li>
+                            <li>Certifications</li>
+                            <li>Skill development</li>
+                        </ul>
+                    </div>
+                    <div class="applications-list">
+                        <h4>Analytics Applications:</h4>
+                        <ul>
+                            <li>Learning effectiveness</li>
+                            <li>Compliance tracking</li>
+                            <li>Skill gap analysis</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="metrics-list">
+                        <h4>Key Metrics:</h4>
+                        <ul>
+                            <li>Training ROI</li>
+                            <li>Compliance rates</li>
+                            <li>Skill acquisition rates</li>
+                        </ul>
+                    </div>
+                    <div class="tags">
+                        <span class="tag traditional">Traditional</span>
+                        <span class="tag operational">Operational</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Employee Surveys/Feedback -->
+            <div class="data-source-card" data-category="traditional strategic">
+                <div class="card-header">Employee Surveys/Feedback</div>
+                <div class="card-body">
+                    <div class="description">
+                        <p>Collects employee sentiment, opinions, and feedback on workplace experience.</p>
+                    </div>
+                    <div class="data-list">
+                        <h4>Examples of Data:</h4>
+                        <ul>
+                            <li>Engagement scores</li>
+                            <li>Satisfaction ratings</li>
+                            <li>eNPS (Employee Net Promoter Score)</li>
+                            <li>Qualitative feedback</li>
+                        </ul>
+                    </div>
+                    <div class="applications-list">
+                        <h4>Analytics Applications:</h4>
+                        <ul>
+                            <li>Engagement analysis</li>
+                            <li>Culture assessment</li>
+                            <li>Satisfaction drivers</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="metrics-list">
+                        <h4>Key Metrics:</h4>
+                        <ul>
+                            <li>Engagement index</li>
+                            <li>Satisfaction trends</li>
+                            <li>Retention risk</li>
+                        </ul>
+                    </div>
+                    <div class="tags">
+                        <span class="tag traditional">Traditional</span>
+                        <span class="tag strategic">Strategic</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Time and Attendance Systems -->
+            <div class="data-source-card" data-category="traditional operational">
+                <div class="card-header">Time and Attendance Systems</div>
+                <div class="card-body">
+                    <div class="description">
+                        <p>Tracks work hours, attendance, and time utilization.</p>
+                    </div>
+                    <div class="data-list">
+                        <h4>Examples of Data:</h4>
+                        <ul>
+                            <li>Clock-in/out times</li>
+                            <li>Absences</li>
+                            <li>Overtime</li>
+                            <li>Shift patterns</li>
+                        </ul>
+                    </div>
+                    <div class="applications-list">
+                        <h4>Analytics Applications:</h4>
+                        <ul>
+                            <li>Attendance patterns</li>
+                            <li>Productivity analysis</li>
+                            <li>Labor optimization</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="metrics-list">
+                        <h4>Key Metrics:</h4>
+                        <ul>
+                            <li>Absenteeism rates</li>
+                            <li>Overtime utilization</li>
+                            <li>Time utilization</li>
+                        </ul>
+                    </div>
+                    <div class="tags">
+                        <span class="tag traditional">Traditional</span>
+                        <span class="tag operational">Operational</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Compensation and Benefits Systems -->
+            <div class="data-source-card" data-category="traditional operational">
+                <div class="card-header">Compensation and Benefits Systems</div>
+                <div class="card-body">
+                    <div class="description">
+                        <p>Manages salary and benefits administration for the workforce.</p>
+                    </div>
+                    <div class="data-list">
+                        <h4>Examples of Data:</h4>
+                        <ul>
+                            <li>Salary data</li>
+                            <li>Bonus information</li>
+                            <li>Benefits enrollment</li>
+                            <li>Equity grants</li>
+                        </ul>
+                    </div>
+                    <div class="applications-list">
+                        <h4>Analytics Applications:</h4>
+                        <ul>
+                            <li>Compensation competitiveness</li>
+                            <li>Benefits optimization</li>
+                            <li>Total rewards effectiveness</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="metrics-list">
+                        <h4>Key Metrics:</h4>
+                        <ul>
+                            <li>Pay equity</li>
+                            <li>Compensation ratio to market</li>
+                            <li>Benefits utilization</li>
+                        </ul>
+                    </div>
+                    <div class="tags">
+                        <span class="tag traditional">Traditional</span>
+                        <span class="tag operational">Operational</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Social Media/External Data -->
+            <div class="data-source-card" data-category="strategic">
+                <div class="card-header">Social Media/External Data</div>
+                <div class="card-body">
+                    <div class="description">
+                        <p>External data about company perception and market conditions.</p>
+                    </div>
+                    <div class="data-list">
+                        <h4>Examples of Data:</h4>
+                        <ul>
+                            <li>Glassdoor ratings</li>
+                            <li>LinkedIn presence</li>
+                            <li>Social media sentiment</li>
+                            <li>Industry benchmarks</li>
+                        </ul>
+                    </div>
+                    <div class="applications-list">
+                        <h4>Analytics Applications:</h4>
+                        <ul>
+                            <li>Employer brand analysis</li>
+                            <li>Competitive intelligence</li>
+                            <li>Market trends</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="metrics-list">
+                        <h4>Key Metrics:</h4>
+                        <ul>
+                            <li>Employer brand strength</li>
+                            <li>Competitive position</li>
+                            <li>Market perception</li>
+                        </ul>
+                    </div>
+                    <div class="tags">
+                        <span class="tag strategic">Strategic</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Exit Interview Data -->
+            <div class="data-source-card" data-category="traditional strategic">
+                <div class="card-header">Exit Interview Data</div>
+                <div class="card-body">
+                    <div class="description">
+                        <p>Information collected when employees leave the organization.</p>
+                    </div>
+                    <div class="data-list">
+                        <h4>Examples of Data:</h4>
+                        <ul>
+                            <li>Reason for leaving</li>
+                            <li>Manager feedback</li>
+                            <li>Work experience evaluation</li>
+                            <li>Destination information</li>
+                        </ul>
+                    </div>
+                    <div class="applications-list">
+                        <h4>Analytics Applications:</h4>
+                        <ul>
+                            <li>Attrition analysis</li>
+                            <li>Retention strategy development</li>
+                            <li>Manager effectiveness</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="metrics-list">
+                        <h4>Key Metrics:</h4>
+                        <ul>
+                            <li>Voluntary turnover drivers</li>
+                            <li>Regretted attrition</li>
+                            <li>Exit patterns</li>
+                        </ul>
+                    </div>
+                    <div class="tags">
+                        <span class="tag traditional">Traditional</span>
+                        <span class="tag strategic">Strategic</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Skill Assessment Data -->
+            <div class="data-source-card" data-category="strategic">
+                <div class="card-header">Skill Assessment Data</div>
+                <div class="card-body">
+                    <div class="description">
+                        <p>Information about employee capabilities and competencies.</p>
+                    </div>
+                    <div class="data-list">
+                        <h4>Examples of Data:</h4>
+                        <ul>
+                            <li>Skill proficiency levels</li>
+                            <li>Certifications</li>
+                            <li>Assessment scores</li>
+                            <li>Capability ratings</li>
+                        </ul>
+                    </div>
+                    <div class="applications-list">
+                        <h4>Analytics Applications:</h4>
+                        <ul>
+                            <li>Skill gap analysis</li>
+                            <li>Workforce capability planning</li>
+                            <li>Succession planning</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="metrics-list">
+                        <h4>Key Metrics:</h4>
+                        <ul>
+                            <li>Skill coverage</li>
+                            <li>Capability index</li>
+                            <li>Bench strength</li>
+                        </ul>
+                    </div>
+                    <div class="tags">
+                        <span class="tag strategic">Strategic</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Employee Communication Platforms -->
+            <div class="data-source-card" data-category="emerging strategic">
+                <div class="card-header">Employee Communication Platforms</div>
+                <div class="card-body">
+                    <div class="description">
+                        <p>Systems for workplace communication and collaboration.</p>
+                    </div>
+                    <div class="data-list">
+                        <h4>Examples of Data:</h4>
+                        <ul>
+                            <li>Message frequency</li>
+                            <li>Collaboration patterns</li>
+                            <li>Network connections</li>
+                            <li>Communication effectiveness</li>
+                        </ul>
+                    </div>
+                    <div class="applications-list">
+                        <h4>Analytics Applications:</h4>
+                        <ul>
+                            <li>Collaboration analysis</li>
+                            <li>Organizational network assessment</li>
+                            <li>Communication effectiveness</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="metrics-list">
+                        <h4>Key Metrics:</h4>
+                        <ul>
+                            <li>Collaboration index</li>
+                            <li>Network centrality</li>
+                            <li>Information flow</li>
+                        </ul>
+                    </div>
+                    <div class="tags">
+                        <span class="tag emerging">Emerging</span>
+                        <span class="tag strategic">Strategic</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Passive Data Collection -->
+            <div class="data-source-card" data-category="emerging">
+                <div class="card-header">Passive Data Collection</div>
+                <div class="card-body">
+                    <div class="description">
+                        <p>Automatically collected workplace activity data without active user input.</p>
+                    </div>
+                    <div class="data-list">
+                        <h4>Examples of Data:</h4>
+                        <ul>
+                            <li>Email metadata</li>
+                            <li>Calendar data</li>
+                            <li>Badge swipes</li>
+                            <li>System logins</li>
+                        </ul>
+                    </div>
+                    <div class="applications-list">
+                        <h4>Analytics Applications:</h4>
+                        <ul>
+                            <li>Productivity analysis</li>
+                            <li>Collaboration patterns</li>
+                            <li>Workspace utilization</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="metrics-list">
+                        <h4>Key Metrics:</h4>
+                        <ul>
+                            <li>Activity metrics</li>
+                            <li>Collaboration patterns</li>
+                            <li>Space utilization</li>
+                        </ul>
+                    </div>
+                    <div class="tags">
+                        <span class="tag emerging">Emerging</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Wearable Technology -->
+            <div class="data-source-card" data-category="emerging">
+                <div class="card-header">Wearable Technology</div>
+                <div class="card-body">
+                    <div class="description">
+                        <p>Data collected from employee wearable devices for wellness and productivity.</p>
+                    </div>
+                    <div class="data-list">
+                        <h4>Examples of Data:</h4>
+                        <ul>
+                            <li>Physical activity levels</li>
+                            <li>Stress indicators</li>
+                            <li>Sleep patterns</li>
+                            <li>Location data</li>
+                        </ul>
+                    </div>
+                    <div class="applications-list">
+                        <h4>Analytics Applications:</h4>
+                        <ul>
+                            <li>Wellness program effectiveness</li>
+                            <li>Stress management</li>
+                            <li>Productivity optimization</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="metrics-list">
+                        <h4>Key Metrics:</h4>
+                        <ul>
+                            <li>Wellness index</li>
+                            <li>Stress levels</li>
+                            <li>Activity correlations</li>
+                        </ul>
+                    </div>
+                    <div class="tags">
+                        <span class="tag emerging">Emerging</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Workspace Sensors -->
+            <div class="data-source-card" data-category="emerging">
+                <div class="card-header">Workspace Sensors</div>
+                <div class="card-body">
+                    <div class="description">
+                        <p>Physical sensors that monitor space utilization and environmental factors.</p>
+                    </div>
+                    <div class="data-list">
+                        <h4>Examples of Data:</h4>
+                        <ul>
+                            <li>Space occupancy</li>
+                            <li>Movement patterns</li>
+                            <li>Environmental conditions</li>
+                            <li>Interaction frequency</li>
+                        </ul>
+                    </div>
+                    <div class="applications-list">
+                        <h4>Analytics Applications:</h4>
+                        <ul>
+                            <li>Workspace optimization</li>
+                            <li>Collaboration analysis</li>
+                            <li>Facilities planning</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="metrics-list">
+                        <h4>Key Metrics:</h4>
+                        <ul>
+                            <li>Space utilization</li>
+                            <li>Interaction density</li>
+                            <li>Environmental quality</li>
+                        </ul>
+                    </div>
+                    <div class="tags">
+                        <span class="tag emerging">Emerging</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <section class="challenges-section">
+            <h2>Integration Challenges</h2>
+            <p>Organizations face several challenges when integrating multiple HR data sources for analytics:</p>
+            <ul>
+                <li><strong>Data silos</strong> - HR data often exists in disconnected systems, making it difficult to create a unified view</li>
+                <li><strong>Inconsistent identifiers</strong> - Different systems may use different employee IDs or naming conventions</li>
+                <li><strong>Varying data quality</strong> - Some systems have more complete or accurate data than others</li>
+                <li><strong>Privacy considerations</strong> - Need to maintain appropriate access controls and anonymization</li>
+                <li><strong>Temporal alignment</strong> - Ensuring data from different time periods is properly synchronized</li>
+                <li><strong>Data governance</strong> - Establishing ownership, access rights, and update protocols</li>
+                <li><strong>System integration costs</strong> - Resources required to connect disparate systems</li>
+            </ul>
+        </section>
+        
+        <section class="emerging-section">
+            <h2>Future Trends in HR Data</h2>
+            <p>The landscape of HR analytics is evolving rapidly with new data sources and technologies:</p>
+            <ul>
+                <li><strong>AI-driven insights</strong> - Machine learning algorithms processing HR data in real-time</li>
+                <li><strong>Natural language processing</strong> - Analysis of unstructured data from communications and feedback</li>
+                <li><strong>Predictive retention modeling</strong> - Identifying flight risks before they become visible</li>
+                <li><strong>Virtual reality training data</strong> - Immersive learning and skill development metrics</li>
+                <li><strong>Workplace sentiment analysis</strong> - Real-time monitoring of employee mood and engagement</li>
+                <li><strong>Ethics and bias detection</strong> - Tools to identify and mitigate bias in HR processes</li>
+                <li><strong>Cross-functional data integration</strong> - Combining HR data with customer, financial, and operational data</li>
+            </ul>
+        </section>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <p>© 2025 HR Analytics Handbook for Business School Students</p>
+        </div>
+    </footer>
+    
+    <script>
+        // Search functionality
+        const searchInput = document.getElementById('searchInput');
+        const dataSourceCards = document.querySelectorAll('.data-source-card');
+        
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            
+            dataSourceCards.forEach(card => {
+                const cardText = card.textContent.toLowerCase();
+                if (cardText.includes(searchTerm)) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        });
+        
+        // Filter functionality
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        
+        filterButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const filter = this.getAttribute('data-filter');
+                
+                // Update active button
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Filter cards
+                dataSourceCards.forEach(card => {
+                    const categories = card.getAttribute('data-category');
+                    
+                    if (filter === 'all' || categories.includes(filter)) {
+                        card.classList.remove('hidden');
+                    } else {
+                        card.classList.add('hidden');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
