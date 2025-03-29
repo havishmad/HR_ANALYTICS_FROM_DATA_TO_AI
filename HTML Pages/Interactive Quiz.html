@@ -1,0 +1,1668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excel Functions MCQ Quiz</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+            background-image: linear-gradient(to bottom right, #f5f5f5, #e0e0e0);
+            min-height: 100vh;
+        }
+        .quiz-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+            padding: 30px;
+            margin-bottom: 30px;
+            transform: translateY(0);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .welcome-screen {
+            text-align: center;
+            padding: 30px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+            margin-top: 20px;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .quiz-selection {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .quiz-button {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 15px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: left;
+            height: 100%;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+        }
+        .quiz-button:hover {
+            background: linear-gradient(135deg, #2980b9, #3498db);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .button-icon {
+            font-size: 28px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .button-text {
+            display: block;
+        }
+        .progress-container {
+            width: 100%;
+            height: 12px;
+            background-color: #e0e0e0;
+            border-radius: 6px;
+            margin: 20px 0;
+            overflow: hidden;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
+        }
+        .progress-bar {
+            height: 100%;
+            border-radius: 6px;
+            background: linear-gradient(to right, #95a5a6, #7f8c8d);
+            width: 0%;
+            transition: width 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+        .question-container {
+            margin-bottom: 20px;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        .question {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #2c3e50;
+            padding: 10px;
+            border-left: 4px solid #3498db;
+        }
+        .options {
+            display: grid;
+            grid-gap: 12px;
+            transition: all 0.3s;
+        }
+        .option {
+            padding: 12px 18px;
+            background-color: #f9f9f9;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+        .option:hover {
+            background-color: #f0f0f0;
+            border-color: #bbb;
+            transform: translateY(-2px);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        .option.selected {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+        }
+        .option.correct {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            color: white;
+            border-color: #27ae60;
+            animation: correctPulse 0.5s;
+        }
+        .option.incorrect {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            border-color: #c0392b;
+            animation: incorrectShake 0.5s;
+        }
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        .nav-button {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 25px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+        }
+        .nav-button:hover {
+            background: linear-gradient(135deg, #2980b9, #3498db);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .nav-button:disabled {
+            background: linear-gradient(135deg, #bdc3c7, #95a5a6);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        .results {
+            text-align: center;
+            padding: 30px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .score {
+            font-size: 28px;
+            font-weight: bold;
+            margin: 25px 0;
+            color: #2c3e50;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            display: inline-block;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        .difficulty-indicator {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-right: 10px;
+            font-weight: 500;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .simple {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            color: white;
+        }
+        .moderate {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            color: white;
+        }
+        .advanced {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+        }
+        .hidden {
+            display: none;
+        }
+        .back-to-main {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 25px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 20px;
+            margin-right: 10px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+        }
+        .back-to-main:hover {
+            background: linear-gradient(135deg, #2980b9, #3498db);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .quiz-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 25px;
+            text-align: center;
+            color: #2c3e50;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        .quiz-title:after {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(to right, #3498db, #2980b9);
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+        .current-question-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+        .quiz-controls {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .exit-button {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 18px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+        }
+        .exit-button:hover {
+            background: linear-gradient(135deg, #2980b9, #3498db);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .quiz-summary {
+            max-width: 700px;
+            margin: 0 auto;
+            text-align: left;
+        }
+        .summary-item {
+            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .summary-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+        }
+        .summary-item.correct {
+            border-left: 5px solid #27ae60;
+        }
+        .summary-item.incorrect {
+            border-left: 5px solid #e74c3c;
+        }
+        .summary-question {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #2c3e50;
+        }
+        .summary-answer {
+            font-weight: 500;
+            margin-bottom: 5px;
+            padding: 8px;
+            border-radius: 4px;
+        }
+        .summary-answer.correct {
+            color: #27ae60;
+            background-color: rgba(46, 204, 113, 0.1);
+        }
+        .summary-answer.incorrect {
+            color: #e74c3c;
+            background-color: rgba(231, 76, 60, 0.1);
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes correctPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes incorrectShake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            75% { transform: translateX(-5px); }
+            100% { transform: translateX(0); }
+        }
+        
+        #confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1000;
+            pointer-events: none;
+        }
+        
+        .results-buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        .results h2 {
+            color: #2c3e50;
+            font-size: 32px;
+            margin-bottom: 20px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .results h2:after {
+            content: '';
+            position: absolute;
+            width: 60%;
+            height: 4px;
+            background: linear-gradient(to right, #3498db, #2980b9);
+            bottom: -10px;
+            left: 20%;
+            border-radius: 2px;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            font-size: 36px;
+            margin-bottom: 20px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        h1:after {
+            content: '';
+            position: absolute;
+            width: 60%;
+            height: 4px;
+            background: linear-gradient(to right, #3498db, #2980b9);
+            bottom: -10px;
+            left: 20%;
+            border-radius: 2px;
+        }
+        
+        h3 {
+            color: #2c3e50;
+            font-size: 24px;
+            margin: 30px 0 20px;
+            text-align: center;
+        }
+        
+        /* Animation for option selection */
+        .option {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .option:after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+        }
+        
+        .option:focus:not(:active)::after {
+            animation: ripple 1s ease-out;
+        }
+        
+        @keyframes ripple {
+            0% {
+                transform: scale(0, 0);
+                opacity: 0.5;
+            }
+            20% {
+                transform: scale(25, 25);
+                opacity: 0.3;
+            }
+            100% {
+                opacity: 0;
+                transform: scale(40, 40);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="welcome-screen" id="welcome-screen">
+        <h1>Excel Functions MCQ Quiz</h1>
+        <p>Select a quiz to begin testing your Excel knowledge:</p>
+        <div class="quiz-selection" id="quiz-selection">
+            <!-- Quiz buttons will be inserted here -->
+        </div>
+    </div>
+
+    <div class="quiz-container hidden" id="quiz-container">
+        <div class="quiz-title" id="quiz-title"></div>
+        <div class="quiz-controls">
+            <button id="exit-quiz" class="exit-button">Back to Home</button>
+        </div>
+        <div class="current-question-info">
+            <span id="difficulty-label"></span>
+            <span id="question-counter"></span>
+        </div>
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        <div class="question-container">
+            <div class="question" id="question"></div>
+            <div class="options" id="options"></div>
+        </div>
+        <div class="navigation">
+            <button class="nav-button" id="prev-button">Previous</button>
+            <button class="nav-button" id="next-button">Next</button>
+        </div>
+    </div>
+
+    <div class="results hidden" id="results">
+        <h2>Quiz Results</h2>
+        <div id="confetti-container"></div>
+        <div class="score" id="score"></div>
+        <div class="summary-container" id="summary-container">
+            <h3>Question Summary</h3>
+            <div class="quiz-summary" id="quiz-summary"></div>
+        </div>
+        <div class="results-buttons">
+            <button class="back-to-main" id="back-to-selection">Back to Quiz Selection</button>
+            <button class="back-to-main" id="retry-quiz">Retry This Quiz</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/confetti-js@0.0.18/dist/index.min.js"></script>
+    <script>
+        // Quiz data
+        const quizzes = [
+            {
+                title: "Example 1: Employee Expense Transaction Analysis",
+                questions: [
+                    {
+                        question: "Which Excel function is used to create a list of unique values from a column of data?",
+                        options: [
+                            "A) SORT",
+                            "B) UNIQUE",
+                            "C) TEXTJOIN",
+                            "D) SUMIF"
+                        ],
+                        correctAnswer: "B",
+                        difficulty: "Simple"
+                    },
+                    {
+                        question: "What function should you use to sum values based on a specific condition in Excel?",
+                        options: [
+                            "A) VLOOKUP",
+                            "B) SUMIF",
+                            "C) CONCATENATE",
+                            "D) TEXTSPLIT"
+                        ],
+                        correctAnswer: "B",
+                        difficulty: "Simple"
+                    },
+                    {
+                        question: "What is the purpose of the # symbol when using a function like UNIQUE in a formula?",
+                        options: [
+                            "A) It is used to denote an absolute reference",
+                            "B) It references all values in a dynamic array",
+                            "C) It represents the end of a formula",
+                            "D) It ensures the formula only applies to one cell"
+                        ],
+                        correctAnswer: "B",
+                        difficulty: "Simple"
+                    },
+                    {
+                        question: "If column A contains employee IDs and column B contains transaction amounts, which formula will return the total amount for a specific employee in cell D2?",
+                        options: [
+                            "A) =SUMIF(A:A, D2, B:B)",
+                            "B) =VLOOKUP(D2, A:B, 2, FALSE)",
+                            "C) =INDEX(B:B, MATCH(D2, A:A, 0))",
+                            "D) =TEXTJOIN(\",\", TRUE, FILTER(B:B, A:A=D2))"
+                        ],
+                        correctAnswer: "A",
+                        difficulty: "Moderate"
+                    },
+                    {
+                        question: "What function should be used to filter a list of expenses for a given employee ID?",
+                        options: [
+                            "A) VLOOKUP",
+                            "B) FILTER",
+                            "C) INDEX",
+                            "D) LEFT"
+                        ],
+                        correctAnswer: "B",
+                        difficulty: "Moderate"
+                    },
+                    {
+                        question: "Which function allows you to join multiple text values into a single string with a chosen separator?",
+                        options: [
+                            "A) CONCATENATE",
+                            "B) JOIN",
+                            "C) TEXTJOIN",
+                            "D) SPLIT"
+                        ],
+                        correctAnswer: "C",
+                        difficulty: "Moderate"
+                    },
+                    {
+                        question: "What is the correct function to extract only the amounts related to an employee ID and display them in a sorted order?",
+                        options: [
+                            "A) =SORT(FILTER(B:B, A:A=D2))",
+                            "B) =SORT(A:A, B:B, -1)",
+                            "C) =TEXTSPLIT(A:A, B:B)",
+                            "D) =MATCH(D2, A:A, 0)"
+                        ],
+                        correctAnswer: "A",
+                        difficulty: "Moderate"
+                    },
+                    {
+                        question: "What formula will list all transaction amounts for a specific employee (D2) in a single cell, separated by commas?",
+                        options: [
+                            "A) =TEXTJOIN(\", \", TRUE, FILTER(B:B, A:A=D2))",
+                            "B) =JOIN(\",\", FILTER(B:B, A:A=D2))",
+                            "C) =VLOOKUP(D2, A:B, 2, FALSE)",
+                            "D) =INDEX(B:B, MATCH(D2, A:A, 0))"
+                        ],
+                        correctAnswer: "A",
+                        difficulty: "Advanced"
+                    },
+                    {
+                        question: "In a dataset with Employee IDs in column A and expenses in column B, what formula would return a list of unique Employee IDs?",
+                        options: [
+                            "A) =SORT(A:A)",
+                            "B) =UNIQUE(A:A)",
+                            "C) =VLOOKUP(A:A, B:B, 2, FALSE)",
+                            "D) =TEXTJOIN(\", \", TRUE, A:A)"
+                        ],
+                        correctAnswer: "B",
+                        difficulty: "Advanced"
+                    },
+                    {
+                        question: "What function combination is used to list all transaction amounts per employee, show them sorted, and include the total sum in brackets?",
+                        options: [
+                            "A) =TEXTJOIN(\", \", TRUE, SORT(FILTER(B:B, A:A=D2))) & \" [\" & SUMIF(A:A, D2, B:B) & \"]\"",
+                            "B) =CONCAT(FILTER(B:B, A:A=D2) & \", \" & SUMIF(A:A, D2, B:B))",
+                            "C) =UNIQUE(A:A) & FILTER(B:B, A:A=D2) & SUMIF(A:A, D2, B:B)",
+                            "D) =TEXTJOIN(\", \", FALSE, FILTER(A:A, B:B=D2)) & \"[\" & UNIQUE(B:B) & \"]\""
+                        ],
+                        correctAnswer: "A",
+                        difficulty: "Advanced"
+                    }
+                ]
+            },
+            {
+                title: "Example 2: Separate First, Middle and Last Name",
+                questions: [
+                    {
+                        question: "Which Excel function is used to extract a substring from the beginning of a text string?",
+                        options: [
+                            "A) LEFT",
+                            "B) RIGHT",
+                            "C) MID",
+                            "D) FIND"
+                        ],
+                        correctAnswer: "A",
+                        difficulty: "Simple"
+                    },
+                    {
+                        question: "What function is best suited to extract text after a specific delimiter in Excel?",
+                        options: [
+                            "A) TEXTBEFORE",
+                            "B) TEXTAFTER",
+                            "C) MID",
+                            "D) SEARCH"
+                        ],
+                        correctAnswer: "B",
+                        difficulty: "Simple"
+                    },
+                    {
+                        question: "If cell A1 contains \"John William Doe,\" which function correctly extracts the first name?",
+                        options: [
+                            "A) =MID(A1,1,FIND(\" \",A1)-1)",
+                            "B) =LEFT(A1,FIND(\" \",A1)-1)",
+                            "C) =RIGHT(A1,FIND(\" \",A1)-1)",
+                            "D) =TEXTAFTER(A1, \" \")"
+                        ],
+                        correctAnswer: "B",
+                        difficulty: "Simple"
+                    },
+                    {
+                        question: "Which formula will extract the last name from a full name given in cell A1?",
+                        options: [
+                            "A) =RIGHT(A1,LEN(A1)-FIND(\" \",A1))",
+                            "B) =MID(A1,FIND(\" \",A1)+1,LEN(A1))",
+                            "C) =TEXTAFTER(A1, \" \", 2)",
+                            "D) =TEXTBEFORE(A1, \" \")"
+                        ],
+                        correctAnswer: "C",
+                        difficulty: "Moderate"
+                    },
+                    {
+                        question: "If a full name in cell A1 consists of first, middle, and last names, which function correctly extracts the middle name?",
+                        options: [
+                            "A) =TEXTBEFORE(TEXTAFTER(A1, \" \"), \" \")",
+                            "B) =TEXTAFTER(A1, \" \")",
+                            "C) =LEFT(A1, FIND(\" \", A1))",
+                            "D) =MID(A1,1,FIND(\" \",A1))"
+                        ],
+                        correctAnswer: "A",
+                        difficulty: "Moderate"
+                    },
+                    {
+                        question: "What function is the most efficient way to split a full name into multiple parts using a space as a delimiter?",
+                        options: [
+                            "A) TEXTSPLIT",
+                            "B) SPLIT",
+                            "C) MID",
+                            "D) SUBSTITUTE"
+                        ],
+                        correctAnswer: "A",
+                        difficulty: "Moderate"
+                    },
+                    {
+                        question: "What is the correct function to extract the last word from a name, regardless of the number of words present?",
+                        options: [
+                            "A) =TEXTAFTER(A1, \" \", 2)",
+                            "B) =RIGHT(A1, LEN(A1)-FIND(\" \",A1))",
+                            "C) =TEXTAFTER(A1, \" \", COUNTA(TEXTSPLIT(A1, \" \")))",
+                            "D) =LEFT(A1, FIND(\" \", A1))"
+                        ],
+                        correctAnswer: "C",
+                        difficulty: "Moderate"
+                    },
+                    {
+                        question: "What function combination is used to extract the first and last name from a full name, keeping only those two?",
+                        options: [
+                            "A) =INDEX(TEXTSPLIT(A1, \" \"), 1) & \" \" & INDEX(TEXTSPLIT(A1, \" \"), COUNTA(TEXTSPLIT(A1, \" \")))",
+                            "B) =TEXTSPLIT(A1, \" \")",
+                            "C) =TEXTJOIN(\" \", TRUE, TEXTSPLIT(A1, \" \"))",
+                            "D) =MID(A1, FIND(\" \", A1), FIND(\" \", A1, 2))"
+                        ],
+                        correctAnswer: "A",
+                        difficulty: "Advanced"
+                    },
+                    {
+                        question: "If a full name is in A1, which formula would correctly extract the middle name only if it exists?",
+                        options: [
+                            "A) =IF(COUNTA(TEXTSPLIT(A1, \" \"))>2, INDEX(TEXTSPLIT(A1, \" \"), 2), \"\")",
+                            "B) =TEXTAFTER(A1, \" \", 2)",
+                            "C) =TEXTBEFORE(A1, \" \")",
+                            "D) =LEFT(A1, FIND(\" \", A1))"
+                        ],
+                        correctAnswer: "A",
+                        difficulty: "Advanced"
+                    },
+                    {
+                        question: "Which function is best for extracting multiple parts of a name dynamically and storing the results in separate cells?",
+                        options: [
+                            "A) TEXTSPLIT",
+                            "B) LEFT",
+                            "C) FIND",
+                            "D) SEARCH"
+                        ],
+                        correctAnswer: "A",
+                        difficulty: "Advanced"
+                    }
+                ]
+            },
+            {
+                title: "Example 3: Rejoin First and Last Name",
+                questions: [
+                    {
+                        question: "Which function is used to combine two text values in Excel?",
+                        options: [
+                            "A) CONCATENATE",
+                            "B) TEXTJOIN",
+                            "C) CONCAT",
+                            "D) All of the above"
+                        ],
+                        correctAnswer: "D",
+                        difficulty: "Simple"
+                    },
+                    {
+                        question: "What is the best function to extract the first word from a full name in Excel?",
+                        options: [
+                            "A) LEFT",
+                            "B) RIGHT",
+                            "C) TEXTBEFORE",
+                            "D) MID"
+                        ],
+                        correctAnswer: "C",
+                        difficulty: "Simple"
+                    },
+                    {
+                        question: "If a full name is in cell A1, which function extracts the last name dynamically?",
+                        options: [
+                            "A) =TEXTAFTER(A1, \" \")",
+                            "B) =TEXTAFTER(A1, \" \", COUNTA(TEXTSPLIT(A1, \" \")))",
+                            "C) =TEXTJOIN(\" \", A1, \" \")",
+                            "D) =MID(A1, 1, FIND(\" \", A1))"
+                        ],
+                        correctAnswer: "B",
+                        difficulty: "Simple"
+                    },
+                    {
+                        question: "What function is best used for joining text values with a delimiter?",
+                        options: [
+                            "A) CONCAT",
+                            "B) TEXTJOIN",
+                            "C) LEFT",
+                            "D) SEARCH"
+                        ],
+                        correctAnswer: "B",
+                        difficulty: "Moderate"
+                    },
+                    {
+                        question: "If A1 contains \"John Adam Smith,\" what formula correctly returns \"John Smith\"?",
+                        options: [
+                            "A) =INDEX(TEXTSPLIT(A1, \" \"), 1) & \" \" & INDEX(TEXTSPLIT(A1, \" \"), COUNTA(TEXTSPLIT(A1, \" \")))",
+                            "B) =TEXTAFTER(A1, \" \", 2)",
+                            "C) =TEXTSPLIT(A1, \" \")",
+                            "D) =MID(A1, 1, FIND(\" \", A1))"
+                        ],
+                        correctAnswer: "A",
+                        difficulty: "Moderate"
+                    },
+                    {
+                        question: "What function allows the creation of a reusable formula in Excel?",
+                        options: [
+                            "A) LET",
+                            "B) LAMBDA",
+                            "C) UNIQUE",
+                            "D) INDEX"
+                        ],
+                        correctAnswer: "B",
+                        difficulty: "Moderate"
+                    },
+                    {
+                        question: "What is the purpose of the LET function in Excel?",
+                        options: [
+                            "A) To create dynamic named ranges",
+                            "B) To store variables within a formula",
+                            "C) To split text into multiple columns",
+                            "D) To filter data dynamically"
+                        ],
+                        correctAnswer: "B",
+                        difficulty: "Moderate"
+                    },
+                    {
+                        question: "If a full name is in A1, which function correctly returns \"First Last\" using LAMBDA?",
+                        options: [
+                            "A) =LAMBDA(name, INDEX(TEXTSPLIT(name, \" \"), 1) & \" \" & INDEX(TEXTSPLIT(name, \" \"), COUNTA(TEXTSPLIT(name, \" \"))))(A1)",
+                            "B) =LEFT(A1, FIND(\" \", A1)) & \" \" & RIGHT(A1, FIND(\" \", A1))",
+                            "C) =TEXTAFTER(A1, \" \") & \" \" & TEXTBEFORE(A1, \" \")",
+                            "D) =LAMBDA(A1, INDEX(TEXTSPLIT(A1, \" \"), 1))"
+                        ],
+                        correctAnswer: "A",
+                        difficulty: "Advanced"
+                    },
+                    {
+                        question: "If a full name contains only one word, how should the formula behave when extracting first and last name?",
+                        options: [
+                            "A) Return an error",
+                            "B) Display the name as is",
+                            "C) Replace missing parts with \"N/A\"",
+                            "D) Extract the middle name instead"
+                        ],
+                        correctAnswer: "B",
+                        difficulty: "Advanced"
+                    },
+                    {
+                        question: "Which function is best for extracting only the first and last words from a name with multiple words?",
+                        options: [
+                            "A) TEXTSPLIT",
+                            "B) TEXTJOIN",
+                            "C) CONCATENATE",
+                            "D) MID"
+                        ],
+                        correctAnswer: "A",
+                        difficulty: "Advanced"
+                    }
+                ]
+            },
+            {
+                title: "Example 4: Find Top Employees by CTC",
+                questions: [
+                    {
+                        question: "Which function is used to sort a range based on a specified column in Excel?",
+                        options: [
+                            "A) UNIQUE",
+                            "B) SORTBY",
+                            "C) VLOOKUP",
+                            "D) MATCH"
+                        ],
+                        correctAnswer: "B",
+                        difficulty: "Simple"
+                    },
+                    {
+                        question: "What function is used to return a list of sequential numbers in Excel?",
+                        options: [
+                            "A) SEQUENCE",
+                            "B) RANK",
+                            "C) INDEX",
+                            "D) COUNT"
+                        ],
+                        correctAnswer: "A",
+                        difficulty: "Simple"
+                    },
+                    {
+                        question: "If column A contains Employee Names and column B contains their CTC, which function will sort employees by CTC in descending order?",
+                        options: [
+                            "A) =SORTBY(A:A, B:B, 1)",
+                            "B) =SORTBY(A:A, B:B, -1)",
+                            "C) =RANK(A:A, B:B)",
+                            "D) =INDEX(A:A, MATCH(A1, B:B, 0))"
+                        ],
+                        correctAnswer: "B",
+                        difficulty: "Simple"
+                    },
+                    {
+                        question: "What function is used to extract a subset of rows from a sorted dataset?",
+                        options: [
+                            "A) FILTER",
+                            "B) INDEX",
+                            "C) UNIQUE",
+                            "D) TEXTJOIN"
+                        ],
+                        correctAnswer: "A",
+                        difficulty: "Moderate"
+                    },
+                    {
+                        question: "If cell A1 contains the number of top employees to extract, which formula correctly returns the top N employees by CTC?",
+                        options: [
+                            "A) =INDEX(SORTBY(A2:B100, B2:B100, -1), SEQUENCE(A1), {1,2})",
+                            "B) =VLOOKUP(A1, A2:B100, 2, FALSE)",
+                            "C) =TEXTJOIN(\", \", TRUE, SORTBY(A2:B100, B2:B100, -1))",
+                            "D) =MATCH(A1, B2:B100, 0)"
+                        ],
+                        correctAnswer: "A",
+                        difficulty: "Moderate"
+                    },
+                    {
+                        question: "What is the primary difference between SORT and SORTBY functions?",
+                        options: [
+                            "A) SORT only works on numeric data, while SORTBY works on text and numbers",
+                            "B) SORT sorts a dataset, while SORTBY allows sorting based on a different column",
+                            "C) SORTBY is an array formula, while SORT is not",
+                            "D) SORT is case-sensitive, while SORTBY is not"
+                        ],
+                        correctAnswer: "B",
+                        difficulty: "Moderate"
+                    },
+                    {
+                        question: "Which function dynamically updates results when a user changes the number of top employees to display?",
+                        options: [
+                            "A) SEQUENCE",
+                            "B) COUNTIF",
+                            "C) INDEX",
+                            "D) MID"
+                        ],
+                        correctAnswer: "A",
+                        difficulty: "Moderate"
+                    },
+                    {
+                        question: "What formula returns the top 3 employees' names and CTC, sorted in descending order, assuming CTC values are in column B and employee names in column A?",
+                        options: [
+                            "A) =INDEX(SORTBY(A2:B100, B2:B100, -1), SEQUENCE(3), {1,2})",
+                            "B) =VLOOKUP(3, A2:B100, 2, FALSE)",
+                            "C) =MATCH(A2:A100, B2:B100, 0)",
+                            "D) =TEXTJOIN(\", \", TRUE, SORTBY(A2:B100, B2:B100, -1))"
+                        ],
+                        correctAnswer: "A",
+                        difficulty: "Advanced"
+                    },
+                    {
+                        question: "Which function is used to generate a dynamic list of numbers, such as ranking positions for top N employees?",
+                        options: [
+                            "A) RANK",
+                            "B) SEQUENCE",
+                            "C) COUNTIF",
+                            "D) INDEX"
+                        ],
+                        correctAnswer: "B",
+                        difficulty: "Advanced"
+                    },
+                    {
+                        question: "If column A contains Employee Names and column B contains CTC, which formula dynamically retrieves the top 5 employees' names and CTC based on user input in D1?",
+                        options: [
+                            "A) =INDEX(SORTBY(A2:B100, B2:B100, -1), SEQUENCE(D1), {1,2})",
+                            "B) =SORTBY(A2:B100, B2:B100, 1)",
+                            "C) =VLOOKUP(D1, A2:B100, 2, FALSE)",
+                            "D) =COUNTIF(A2:A100, D1)"
+                        ],
+                        correctAnswer: "A",
+                        difficulty: "Advanced"
+                    }
+                ]
+            },
+            {
+                title: "Example 5: Find Overall Training Feedback",
+                questions: [
+                    {
+                        question: "Which function is used to calculate the average of multiple values in Excel?",
+                        options: [
+                            "A) SUMIF",
+                            "B) AVERAGE",
+                            "C) COUNT",
+                            "D) RANK"
+                        ],
+                        correctAnswer: "B",
+                        difficulty: "Simple"
+                    },
+                    {
+                        question: "What function can be used to evaluate multiple conditions and return different text values based on them?",
+                        options: [
+                            "A) COUNTIF",
+                            "B) IF",
+                            "C) TEXTJOIN",
+                            "D) UNIQUE"
+                        ],
+                        correctAnswer: "B",
+                        difficulty: "Simple"
+                    },
+                    {
+                        question: "If a training feedback score is stored in column B, which formula calculates the average score for the first 10 participants?",
+                        options: [
+                            "A) =SUM(B1:B10)/COUNT(B1:B10)",
+                            "B) =AVERAGE(B1:B10)",
+                            "C) =SUMIF(B1:B10, \">0\")",
+                            "D) =TEXTJOIN(\",\", TRUE, B1:B10)"
+                        ],
+                        correctAnswer: "B",
+                        difficulty: "Simple"
+                    },
+                    {
+                        question: "If the average training score is in cell D2, which formula classifies it as \"Poor,\" \"Good,\" or \"Excellent\"?",
+                        options: [
+                            "A) =IF(D2<4, \"Poor\", IF(AND(D2>=4.5, B2>4, C2>4, OR(B2=5, C2=5)), \"Excellent\", \"Good\"))",
+                            "B) =IF(D2>4.5, \"Excellent\", \"Good\")",
+                            "C) =COUNTIF(D2:D100, \">4\")",
+                            "D) =TEXTJOIN(\",\", TRUE, D2:D100)"
+                        ],
+                        correctAnswer: "A",
+                        difficulty: "Moderate"
+                    },
+                    {
+                        question: "Which function allows Excel to check multiple conditions at the same time?",
+                        options: [
+                            "A) OR",
+                            "B) AND",
+                            "C) FIND",
+                            "D) SEARCH"
+                        ],
+                        correctAnswer: "B",
+                        difficulty: "Moderate"
+                    },
+                    {
+                        question: "Which function will check if a value meets a condition and return a corresponding text label?",
+                        options: [
+                            "A) MATCH",
+                            "B) INDEX",
+                            "C) IF",
+                            "D) SORT"
+                        ],
+                        correctAnswer: "C",
+                        difficulty: "Moderate"
+                    },
+                    {
+                        question: "If training scores are recorded in B2:D100, which formula correctly calculates the overall training average for each row?",
+                        options: [
+                            "A) =AVERAGE(B2:D2)",
+                            "B) =SUM(B2:D2)/COUNT(B2:D2)",
+                            "C) =IF(D2<4, \"Poor\", IF(D2>=4.5, \"Excellent\", \"Good\"))",
+                            "D) =INDEX(B2:D2, 1)"
+                        ],
+                        correctAnswer: "A",
+                        difficulty: "Moderate"
+                    },
+                    {
+                        question: "Which function ensures that at least one of the training parameters is equal to 5 before classifying it as \"Excellent\"?",
+                        options: [
+                            "A) =IF(AND(D2>=4.5, B2>4, C2>4, OR(B2=5, C2=5)), \"Excellent\", \"Good\")",
+                            "B) =IF(D2>4.5, \"Excellent\", \"Good\")",
+                            "C) =COUNTIF(D2:D100, \">4\")",
+                            "D) =TEXTJOIN(\",\", TRUE, D2:D100)"
+                        ],
+                        correctAnswer: "A",
+                        difficulty: "Advanced"
+                    },
+                    {
+                        question: "What is the best function to count how many participants received a training score below 4?",
+                        options: [
+                            "A) =COUNTIF(D2:D100, \"<4\")",
+                            "B) =IF(D2<4, \"Poor\", \"Good\")",
+                            "C) =MATCH(4, D2:D100, 0)",
+                            "D) =SUM(D2:D100)/COUNT(D2:D100)"
+                        ],
+                        correctAnswer: "A",
+                        difficulty: "Advanced"
+                    },
+                    {
+                        question: "If training scores are stored in B2:D100, what formula dynamically calculates the percentage of \"Excellent\" feedbacks?",
+                        options: [
+                            "A) =COUNTIF(E2:E100, \"Excellent\")/COUNTA(E2:E100)",
+                            "B) =SUMIF(E2:E100, \"Excellent\")/COUNTA(E2:E100)",
+                            "C) =TEXTJOIN(\",\", TRUE, E2:E100)",
+                            "D) =SORT(E2:E100, 1, -1)"
+                        ],
+                        correctAnswer: "A",
+                        difficulty: "Advanced"
+                    }
+                ]
+            },
+            {
+                title: "Example 6: Find Age",
+                questions: [
+                    {
+                        question: "Which function calculates the difference between two dates in Excel?",
+                        options: [
+                            "A) DATEDIF",
+                            "B) YEARFRAC",
+                            "C) TODAY",
+                            "D) All of the above"
+                        ],
+                        correctAnswer: "D",
+                        difficulty: "Simple"
+                    },
+                    {
+                        question: "What function returns the current date in Excel?",
+                        options: [
+                            "A) NOW",
+                            "B) TODAY",
+                            "C) YEARFRAC",
+                            "D) DATE"
+                        ],
+                        correctAnswer: "B",
+                        difficulty: "Simple"
+                    },
+                    {
+                        question: "Which function is best used to find the number of full years between two dates?",
+                        options: [
+                            "A) =DATEDIF(A1, B1, \"y\")",
+                            "B) =YEAR(B1)-YEAR(A1)",
+                            "C) =TEXT(A1, \"YYYY\")-TEXT(B1, \"YYYY\")",
+                            "D) =COUNT(A1:B1)"
+                        ],
+                        correctAnswer: "A",
+                        difficulty: "Simple"
+                    },
+                    {
+                        question: "If a date of birth is in cell A1, which formula will calculate age in decimal years?",
+                        options: [
+                            "A) =YEARFRAC(A1, TODAY())",
+                            "B) =DATEDIF(A1, TODAY(), \"y\")",
+                            "C) =COUNTIF(A1, TODAY())",
+                            "D) =TEXT(A1, \"YYYY\")-TEXT(TODAY(), \"YYYY\")"
+                        ],
+                        correctAnswer: "A",
+                        difficulty: "Moderate"
+                    },
+                    {
+                        question: "Which unit parameter is used in DATEDIF to return age in years, months, and days?",
+                        options: [
+                            "A) \"y\"",
+                            "B) \"ymd\"",
+                            "C) \"ym\", \"md\"",
+                            "D) \"y\", \"m\", \"d\""
+                        ],
+                        correctAnswer: "D",
+                        difficulty: "Moderate"
+                    },
+                    {
+                        question: "What formula correctly calculates age in years, months, and days in a single output?",
+                        options: [
+                            "A) =DATEDIF(A1, TODAY(), \"y\") & \" years \" & DATEDIF(A1, TODAY(), \"ym\") & \" months \" & DATEDIF(A1, TODAY(), \"md\") & \" days\"",
+                            "B) =DATEDIF(A1, TODAY(), \"y\")",
+                            "C) =YEAR(TODAY()) - YEAR(A1)",
+                            "D) =TEXT(A1, \"YYYY\")-TEXT(TODAY(), \"YYYY\")"
+                        ],
+                        correctAnswer: "A",
+                        difficulty: "Moderate"
+                    },
+                    {
+                        question: "What function calculates age in years and months with a decimal format (e.g., 45.6 years)?",
+                        options: [
+                            "A) =YEARFRAC(A1, TODAY())",
+                            "B) =DATEDIF(A1, TODAY(), \"y\") & \".\" & DATEDIF(A1, TODAY(), \"ym\")",
+                            "C) =TEXT(A1, \"YYYY\")-TEXT(TODAY(), \"YYYY\")",
+                            "D) =TEXT(A1, \"MM\")-TEXT(TODAY(), \"MM\")"
+                        ],
+                        correctAnswer: "B",
+                        difficulty: "Moderate"
+                    },
+                    {
+                        question: "If column A contains employee birthdates, which formula finds the number of employees older than 40 years?",
+                        options: [
+                            "A) =COUNTIF(A:A, \"<=\" & TODAY()-40*365)",
+                            "B) =COUNTIF(YEARFRAC(A:A, TODAY()), \">40\")",
+                            "C) =COUNTIF(A:A, TODAY()-14600)",
+                            "D) =COUNTIF(A:A, \">=40\")"
+                        ],
+                        correctAnswer: "B",
+                        difficulty: "Advanced"
+                    },
+                    {
+                        question: "If the birthdate is in cell A1, what function calculates the exact number of months since birth?",
+                        options: [
+                            "A) =DATEDIF(A1, TODAY(), \"m\")",
+                            "B) =DATEDIF(A1, TODAY(), \"ym\")",
+                            "C) =YEARFRAC(A1, TODAY())*12",
+                            "D) =TEXT(A1, \"MM\")-TEXT(TODAY(), \"MM\")"
+                        ],
+                        correctAnswer: "A",
+                        difficulty: "Advanced"
+                    },
+                    {
+                        question: "Which formula calculates age in years and months as a decimal, formatted as YY.MM (e.g., 45.08 for 45 years and 8 months)?",
+                        options: [
+                            "A) =DATEDIF(A1, TODAY(), \"y\") & \".\" & TEXT(DATEDIF(A1, TODAY(), \"ym\"), \"00\")",
+                            "B) =YEARFRAC(A1, TODAY())",
+                            "C) =TEXT(A1, \"YYYY\")-TEXT(TODAY(), \"YYYY\") & \".\" & TEXT(A1, \"MM\")",
+                            "D) =DATEDIF(A1, TODAY(), \"y\") & \".\" & DATEDIF(A1, TODAY(), \"ym\")"
+                        ],
+                        correctAnswer: "A",
+                        difficulty: "Advanced"
+                    }
+                ]
+            },
+            {
+                title: "Example 7: Extract Email ID",
+                questions: [
+                    {
+                        question: "What does REGEXEXTRACT do in Excel?",
+                        options: [
+                            "A) Finds the position of text",
+                            "B) Extracts text based on a pattern",
+                            "C) Joins multiple text values",
+                            "D) Converts text to uppercase"
+                        ],
+                        correctAnswer: "B",
+                        difficulty: "Simple"
+                    },
+                    {
+                        question: "What does the REGEXREPLACE function do in Excel?",
+                        options: [
+                            "A) Removes all text from a cell",
+                            "B) Replaces text that matches a specific pattern",
+                            "C) Changes text to bold format",
+                            "D) Finds duplicate values"
+                        ],
+                        correctAnswer: "B",
+                        difficulty: "Simple"
+                    },
+                    {
+                        question: "If a cell contains \"Order #12345\", which function extracts just the number using REGEX?",
+                        options: [
+                            "A) =REGEXEXTRACT(A1, \"\\d+\")",
+                            "B) =LEFT(A1,5)",
+                            "C) =TEXTSPLIT(A1, \" \")",
+                            "D) =CONCAT(A1:A10)"
+                        ],
+                        correctAnswer: "A",
+                        difficulty: "Simple"
+                    }
+                ]
+            },
+            {
+                title: "Example 8: Employee Training Completion",
+                questions: [
+                    {
+                        question: "Which function is best for looking up whether an employee attended both training sessions?",
+                        options: [
+                            "A) VLOOKUP",
+                            "B) FILTER",
+                            "C) UNIQUE",
+                            "D) MATCH"
+                        ],
+                        correctAnswer: "A",
+                        difficulty: "Simple"
+                    },
+                    {
+                        question: "What function can be used to find whether a value exists in another column?",
+                        options: [
+                            "A) COUNT",
+                            "B) MATCH",
+                            "C) LEN",
+                            "D) TEXTJOIN"
+                        ],
+                        correctAnswer: "B",
+                        difficulty: "Simple"
+                    },
+                    {
+                        question: "If column A lists employees who attended Training A and column B lists those who attended Training B, which function finds employees in both lists?",
+                        options: [
+                            "A) =FILTER(A:A, ISNUMBER(MATCH(A:A, B:B, 0)))",
+                            "B) =VLOOKUP(A:A, B:B, 1, FALSE)",
+                            "C) =TEXTJOIN(\",\", TRUE, A:A, B:B)",
+                            "D) =COUNT(A:A, B:B)"
+                        ],
+                        correctAnswer: "A",
+                        difficulty: "Simple"
+                    },
+                    {
+                        question: "Which function is used to check if an employee attended Training A but not Training B?",
+                        options: [
+                            "A) =FILTER(A:A, ISNA(VLOOKUP(A:A, B:B, 1, FALSE)))",
+                            "B) =MATCH(A:A, B:B, 0)",
+                            "C) =COUNTIF(A:A, B:B)",
+                            "D) =INDEX(A:A, MATCH(A:A, B:B, 0))"
+                        ],
+                        correctAnswer: "A",
+                        difficulty: "Moderate"
+                    },
+                    {
+                        question: "Which function is most useful for finding employees who attended at least one of the two trainings without duplicates?",
+                        options: [
+                            "A) UNIQUE",
+                            "B) VSTACK",
+                            "C) INDEX",
+                            "D) TEXTSPLIT"
+                        ],
+                        correctAnswer: "B",
+                        difficulty: "Moderate"
+                    },
+                    {
+                        question: "What is the main difference between using VLOOKUP and MATCH for checking employee training completion?",
+                        options: [
+                            "A) VLOOKUP returns a value, while MATCH returns a position",
+                            "B) MATCH searches multiple columns, while VLOOKUP does not",
+                            "C) VLOOKUP is case-sensitive, while MATCH is not",
+                            "D) MATCH is faster than VLOOKUP"
+                        ],
+                        correctAnswer: "A",
+                        difficulty: "Moderate"
+                    },
+                    {
+                        question: "If column A contains employees from Training A and column B contains Training B attendees, which function combines both lists without duplicates?",
+                        options: [
+                            "A) =UNIQUE(VSTACK(A:A, B:B))",
+                            "B) =TEXTJOIN(\",\", TRUE, A:A, B:B)",
+                            "C) =FILTER(A:A, B:B, TRUE)",
+                            "D) =VLOOKUP(A:A, B:B, 1, FALSE)"
+                        ],
+                        correctAnswer: "A",
+                        difficulty: "Moderate"
+                    },
+                    {
+                        question: "What formula would correctly return employees who attended either Training A or B without duplication?",
+                        options: [
+                            "A) =UNIQUE(VSTACK(A:A, B:B))",
+                            "B) =MATCH(A:A, B:B, 0)",
+                            "C) =VLOOKUP(A:A, B:B, 1, FALSE)",
+                            "D) =TEXTSPLIT(A:A, B:B, \" \")"
+                        ],
+                        correctAnswer: "A",
+                        difficulty: "Advanced"
+                    },
+                    {
+                        question: "What formula ensures that only employees who attended both Training A and Training B are listed?",
+                        options: [
+                            "A) =FILTER(A:A, ISNUMBER(MATCH(A:A, B:B, 0)))",
+                            "B) =VLOOKUP(A:A, B:B, 1, FALSE)",
+                            "C) =INDEX(A:A, MATCH(A:A, B:B, 0))",
+                            "D) =TEXTJOIN(\",\", TRUE, A:A, B:B)"
+                        ],
+                        correctAnswer: "A",
+                        difficulty: "Advanced"
+                    },
+                    {
+                        question: "Which function is best for identifying employees who attended only Training A?",
+                        options: [
+                            "A) =FILTER(A:A, ISNA(VLOOKUP(A:A, B:B, 1, FALSE)))",
+                            "B) =TEXTJOIN(\",\", TRUE, A:A, B:B)",
+                            "C) =MATCH(A:A, B:B, 0)",
+                            "D) =COUNTIF(A:A, B:B)"
+                        ],
+                        correctAnswer: "A",
+                        difficulty: "Advanced"
+                    }
+                ]
+            }
+        ];
+
+        // Variables to track the state
+        let currentQuiz = null;
+        let currentQuestionIndex = 0;
+        let userAnswers = [];
+        let quizStarted = false;
+
+        // DOM Elements
+        const welcomeScreen = document.getElementById('welcome-screen');
+        const quizSelection = document.getElementById('quiz-selection');
+        const quizContainer = document.getElementById('quiz-container');
+        const quizTitle = document.getElementById('quiz-title');
+        const difficultyLabel = document.getElementById('difficulty-label');
+        const questionCounter = document.getElementById('question-counter');
+        const progressBar = document.getElementById('progress-bar');
+        const questionElement = document.getElementById('question');
+        const optionsElement = document.getElementById('options');
+        const prevButton = document.getElementById('prev-button');
+        const nextButton = document.getElementById('next-button');
+        const resultsElement = document.getElementById('results');
+        const scoreElement = document.getElementById('score');
+        const backToSelectionButton = document.getElementById('back-to-selection');
+        const retryQuizButton = document.getElementById('retry-quiz');
+        const exitQuizButton = document.getElementById('exit-quiz');
+        const quizSummary = document.getElementById('quiz-summary');
+
+        // Initialize the quiz selection
+        function initializeQuizSelection() {
+            const icons = [
+                'fa-solid fa-filter',             // Example 1: Employee Expense Transaction Analysis
+                'fa-solid fa-user-tag',           // Example 2: Separate First, Middle and Last Name
+                'fa-solid fa-user-group',         // Example 3: Rejoin First and Last Name
+                'fa-solid fa-trophy',             // Example 4: Find Top Employees by CTC
+                'fa-solid fa-star',               // Example 5: Find Overall Training Feedback
+                'fa-solid fa-calendar-days',      // Example 6: Find Age
+                'fa-solid fa-at',                 // Example 7: Extract Email ID
+                'fa-solid fa-check-double'        // Example 8: Employee Training Completion
+            ];
+            
+            quizzes.forEach((quiz, index) => {
+                const button = document.createElement('button');
+                button.classList.add('quiz-button');
+                
+                // Add icon and text
+                const iconElement = document.createElement('span');
+                iconElement.className = `button-icon ${icons[index]}`;
+                
+                const textElement = document.createElement('span');
+                textElement.className = 'button-text';
+                textElement.textContent = quiz.title;
+                
+                button.appendChild(iconElement);
+                button.appendChild(textElement);
+                
+                button.addEventListener('click', () => startQuiz(index));
+                quizSelection.appendChild(button);
+            });
+        }
+
+        // Start a quiz
+        function startQuiz(quizIndex) {
+            currentQuiz = quizzes[quizIndex];
+            currentQuestionIndex = 0;
+            userAnswers = Array(currentQuiz.questions.length).fill(null);
+            quizStarted = true;
+
+            welcomeScreen.classList.add('hidden');
+            quizContainer.classList.remove('hidden');
+            resultsElement.classList.add('hidden');
+
+            quizTitle.textContent = currentQuiz.title;
+            displayQuestion();
+        }
+
+        // Display the current question
+        function displayQuestion() {
+            const question = currentQuiz.questions[currentQuestionIndex];
+            
+            // Update difficulty label
+            const difficultyClass = question.difficulty.toLowerCase();
+            difficultyLabel.innerHTML = `<span class="difficulty-indicator ${difficultyClass}">${question.difficulty}</span>`;
+            
+            // Update question counter
+            questionCounter.textContent = `Question ${currentQuestionIndex + 1} of ${currentQuiz.questions.length}`;
+            
+            // Update progress bar
+            const progressPercentage = ((currentQuestionIndex + 1) / currentQuiz.questions.length) * 100;
+            progressBar.style.width = `${progressPercentage}%`;
+            
+            // Hide previous question content for animation
+            questionElement.style.opacity = 0;
+            optionsElement.style.opacity = 0;
+            
+            // Display question text after a short delay
+            setTimeout(() => {
+                questionElement.textContent = question.question;
+                
+                // Display options
+                optionsElement.innerHTML = '';
+                question.options.forEach((option, index) => {
+                    const optionElement = document.createElement('div');
+                    optionElement.classList.add('option');
+                    optionElement.textContent = option;
+                    
+                    // Apply selected class if this option is selected
+                    if (userAnswers[currentQuestionIndex] === String.fromCharCode(65 + index)) {
+                        optionElement.classList.add('selected');
+                    }
+                    
+                    // Re-enable clicking on options for new question
+                    optionElement.style.pointerEvents = 'auto';
+                    
+                    optionElement.addEventListener('click', () => selectOption(index));
+                    optionsElement.appendChild(optionElement);
+                });
+                
+                // Fade in the new question content
+                questionElement.style.opacity = 1;
+                optionsElement.style.opacity = 1;
+            }, 150);
+            
+            // Update button states
+            prevButton.disabled = currentQuestionIndex === 0;
+            nextButton.textContent = currentQuestionIndex === currentQuiz.questions.length - 1 ? 'Finish' : 'Next';
+        }
+
+        // Select an option
+        function selectOption(optionIndex) {
+            const options = optionsElement.querySelectorAll('.option');
+            
+            // Remove selected class from all options
+            options.forEach(option => option.classList.remove('selected'));
+            
+            // Add selected class to the clicked option
+            options[optionIndex].classList.add('selected');
+            
+            // Update user answers
+            userAnswers[currentQuestionIndex] = String.fromCharCode(65 + optionIndex);
+        }
+
+        // Navigate to the previous question
+        function goToPreviousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                displayQuestion();
+            }
+        }
+
+        // Navigate to the next question or finish the quiz
+        function goToNextQuestion() {
+            // First show correct/incorrect feedback for the current question if answered
+            if (userAnswers[currentQuestionIndex] !== null) {
+                showAnswerFeedback();
+                
+                // Add a small delay before moving to the next question
+                setTimeout(() => {
+                    if (currentQuestionIndex < currentQuiz.questions.length - 1) {
+                        currentQuestionIndex++;
+                        displayQuestion();
+                    } else {
+                        finishQuiz();
+                    }
+                }, 1000);
+            } else {
+                // If no answer selected, just move to next question
+                if (currentQuestionIndex < currentQuiz.questions.length - 1) {
+                    currentQuestionIndex++;
+                    displayQuestion();
+                } else {
+                    finishQuiz();
+                }
+            }
+        }
+        
+        // Show visual feedback for correct/incorrect answers
+        function showAnswerFeedback() {
+            const options = optionsElement.querySelectorAll('.option');
+            const correctAnswer = currentQuiz.questions[currentQuestionIndex].correctAnswer;
+            const userAnswer = userAnswers[currentQuestionIndex];
+            
+            // Disable clicking on options during feedback
+            options.forEach(option => {
+                option.style.pointerEvents = 'none';
+            });
+            
+            // Show correct and incorrect answers
+            options.forEach((option, index) => {
+                const optionLetter = String.fromCharCode(65 + index);
+                
+                if (optionLetter === correctAnswer) {
+                    option.classList.add('correct');
+                } else if (optionLetter === userAnswer && userAnswer !== correctAnswer) {
+                    option.classList.add('incorrect');
+                }
+            });
+        }
+
+        // Finish the quiz and show results
+        function finishQuiz() {
+            quizContainer.classList.add('hidden');
+            resultsElement.classList.remove('hidden');
+            
+            // Calculate score
+            let correctAnswers = 0;
+            userAnswers.forEach((answer, index) => {
+                if (answer === currentQuiz.questions[index].correctAnswer) {
+                    correctAnswers++;
+                }
+            });
+            
+            const percentage = Math.round((correctAnswers / currentQuiz.questions.length) * 100);
+            scoreElement.textContent = `You scored ${correctAnswers} out of ${currentQuiz.questions.length} (${percentage}%)`;
+            
+            // Generate summary of correct and incorrect answers
+            generateQuizSummary();
+            
+            // Create confetti effect if score is good
+            if (percentage >= 70) {
+                createConfetti();
+            }
+        }
+        
+        // Generate confetti effect for good scores
+        function createConfetti() {
+            const confettiSettings = { 
+                target: 'confetti-container',
+                max: 200,
+                size: 1.5,
+                animate: true,
+                respawn: false,
+                props: ['circle', 'square', 'triangle', 'line'],
+                colors: [[165,104,246], [230,61,135], [0,199,228], [253,214,126]],
+                clock: 25,
+                rotate: true
+            };
+            
+            const confetti = new ConfettiGenerator(confettiSettings);
+            confetti.render();
+            
+            // Stop confetti after a few seconds
+            setTimeout(() => {
+                confetti.clear();
+            }, 5000);
+        }
+        
+        // Generate summary of quiz results
+        function generateQuizSummary() {
+            quizSummary.innerHTML = '';
+            
+            currentQuiz.questions.forEach((question, index) => {
+                const userAnswer = userAnswers[index];
+                const correctAnswer = question.correctAnswer;
+                const isCorrect = userAnswer === correctAnswer;
+                
+                const summaryItem = document.createElement('div');
+                summaryItem.classList.add('summary-item');
+                summaryItem.classList.add(isCorrect ? 'correct' : 'incorrect');
+                
+                // Find the letter and full text of the user's answerm
+                let userAnswerText = 'Not answered';
+                if (userAnswer) {
+                    const userAnswerIndex = userAnswer.charCodeAt(0) - 65; // Convert A,B,C,D to 0,1,2,3
+                    userAnswerText = question.options[userAnswerIndex];
+                }
+                
+                // Find the letter and full text of the correct answer
+                const correctAnswerIndex = correctAnswer.charCodeAt(0) - 65; // Convert A,B,C,D to 0,1,2,3
+                const correctAnswerText = question.options[correctAnswerIndex];
+                
+                summaryItem.innerHTML = `
+                    <div class="summary-question">
+                        <strong>Q${index + 1}:</strong> ${question.question}
+                    </div>
+                    <div class="summary-answer ${isCorrect ? 'correct' : 'incorrect'}">
+                        Your answer: ${userAnswer ? userAnswerText : 'Not answered'}
+                    </div>
+                    ${!isCorrect ? `
+                    <div class="summary-answer correct">
+                        Correct answer: ${correctAnswerText}
+                    </div>
+                    ` : ''}
+                    <div class="summary-difficulty">
+                        <span class="difficulty-indicator ${question.difficulty.toLowerCase()}">${question.difficulty}</span>
+                    </div>
+                `;
+                
+                quizSummary.appendChild(summaryItem);
+            });
+        }
+
+        // Return to quiz selection
+        function returnToQuizSelection() {
+            resultsElement.classList.add('hidden');
+            welcomeScreen.classList.remove('hidden');
+        }
+        
+        // Exit current quiz
+        function exitQuiz() {
+            if (confirm('Are you sure you want to return to the home page? Your progress will be lost.')) {
+                quizContainer.classList.add('hidden');
+                welcomeScreen.classList.remove('hidden');
+            }
+        }
+
+        // Retry the current quiz
+        function retryQuiz() {
+            userAnswers = Array(currentQuiz.questions.length).fill(null);
+            currentQuestionIndex = 0;
+            
+            resultsElement.classList.add('hidden');
+            quizContainer.classList.remove('hidden');
+            
+            displayQuestion();
+        }
+
+        // Event listeners
+        prevButton.addEventListener('click', goToPreviousQuestion);
+        nextButton.addEventListener('click', goToNextQuestion);
+        backToSelectionButton.addEventListener('click', returnToQuizSelection);
+        retryQuizButton.addEventListener('click', retryQuiz);
+        exitQuizButton.addEventListener('click', exitQuiz);
+
+        // Initialize the app
+        initializeQuizSelection();
+    </script>
+</body>
+</html>

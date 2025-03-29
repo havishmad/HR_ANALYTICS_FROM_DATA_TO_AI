@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Commission Structures</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --success-color: #2ecc71;
+            --warning-color: #f39c12;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card-header {
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+            color: white;
+            padding: 1.5rem;
+            position: relative;
+        }
+        
+        .card-number {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background-color: rgba(255, 255, 255, 0.2);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            z-index: 2;
+        }
+        
+        .card-title {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            padding-right: 40px; /* Add padding to prevent text from overlapping with the number */
+            position: relative;
+            z-index: 1;
+        }
+        
+        .card-subtitle {
+            font-style: italic;
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+        
+        .card-body {
+            padding: 1.5rem;
+        }
+        
+        .section-title {
+            font-size: 1.1rem;
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-title::before {
+            content: '';
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background-color: var(--secondary-color);
+            margin-right: 8px;
+            border-radius: 50%;
+        }
+        
+        ul {
+            list-style-type: none;
+            margin-bottom: 1.5rem;
+        }
+        
+        li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        
+        li::before {
+            content: '•';
+            color: var(--secondary-color);
+            position: absolute;
+            left: 0;
+        }
+        
+        .pros li::before {
+            content: '✓';
+            color: var(--success-color);
+        }
+        
+        .cons li::before {
+            content: '✗';
+            color: var(--accent-color);
+        }
+        
+        .recommendation {
+            background-color: var(--light-color);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-top: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .recommendation::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--secondary-color), var(--accent-color));
+        }
+        
+        .recommendation h2 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .recommendation p {
+            color: var(--dark-color);
+            line-height: 1.8;
+        }
+        
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .animate-in {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s forwards;
+        }
+        
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .card-container {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="animate-in">
+        <h1>Sales Commission Structures</h1>
+        <p class="subtitle">Strategic approaches to incentivize and reward sales performance</p>
+    </header>
+    
+    <div class="container">
+        <div class="card-container">
+            <!-- Card 1 -->
+            <div class="card animate-in" style="animation-delay: 0.1s;">
+                <div class="card-header">
+                    <div class="card-number">1</div>
+                    <h2 class="card-title">Fixed Commission Per Sale</h2>
+                    <p class="card-subtitle">Simple, predictable, volume-focused</p>
+                </div>
+                <div class="card-body">
+                    <p><strong>How it Works:</strong> Salespeople earn a fixed amount per unit sold, regardless of the value.</p>
+                    <div class="section-title">Pros</div>
+                    <ul class="pros">
+                        <li>Simple and easy to understand</li>
+                        <li>Encourages volume-based selling</li>
+                        <li>Predictable commission costs</li>
+                    </ul>
+                    <div class="section-title">Cons</div>
+                    <ul class="cons">
+                        <li>Doesn't incentivize higher-value deals</li>
+                        <li>Can lead to a focus on low-margin products</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Card 2 -->
+            <div class="card animate-in" style="animation-delay: 0.2s;">
+                <div class="card-header">
+                    <div class="card-number">2</div>
+                    <h2 class="card-title">Tiered Commission Structure</h2>
+                    <p class="card-subtitle">Progressive, achievement-based</p>
+                </div>
+                <div class="card-body">
+                    <p><strong>How it Works:</strong> Different commission rates apply as salespeople reach higher targets (e.g., 5% up to ₹10L, 7% for ₹10L-₹20L, 10% above ₹20L).</p>
+                    <div class="section-title">Pros</div>
+                    <ul class="pros">
+                        <li>Encourages overperformance</li>
+                        <li>Rewards top performers without overpaying low performers</li>
+                        <li>Keeps motivation high throughout the month/quarter</li>
+                    </ul>
+                    <div class="section-title">Cons</div>
+                    <ul class="cons">
+                        <li>Complexity in calculation and tracking</li>
+                        <li>Salespeople might hold deals to maximize commission in the next period</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Card 3 -->
+            <div class="card animate-in" style="animation-delay: 0.3s;">
+                <div class="card-header">
+                    <div class="card-number">3</div>
+                    <h2 class="card-title">Profit-Based Commission</h2>
+                    <p class="card-subtitle">Margin-focused, profitability-aligned</p>
+                </div>
+                <div class="card-body">
+                    <p><strong>How it Works:</strong> Commission is based on the profit margin of each sale rather than revenue.</p>
+                    <div class="section-title">Pros</div>
+                    <ul class="pros">
+                        <li>Aligns sales incentives with company profitability</li>
+                        <li>Encourages selling higher-margin products/services</li>
+                    </ul>
+                    <div class="section-title">Cons</div>
+                    <ul class="cons">
+                        <li>Can demotivate sales teams if margin control is outside their influence</li>
+                        <li>Harder to calculate, requires detailed financial tracking</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Card 4 -->
+            <div class="card animate-in" style="animation-delay: 0.4s;">
+                <div class="card-header">
+                    <div class="card-number">4</div>
+                    <h2 class="card-title">Team-Based Commission</h2>
+                    <p class="card-subtitle">Collaborative, group-oriented</p>
+                </div>
+                <div class="card-body">
+                    <p><strong>How it Works:</strong> Commission is distributed based on the overall performance of a team rather than individual sales.</p>
+                    <div class="section-title">Pros</div>
+                    <ul class="pros">
+                        <li>Encourages teamwork and knowledge sharing</li>
+                        <li>Can improve overall sales consistency</li>
+                    </ul>
+                    <div class="section-title">Cons</div>
+                    <ul class="cons">
+                        <li>High performers may feel demotivated if others don't contribute equally</li>
+                        <li>Can lead to internal conflicts over effort distribution</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Card 5 -->
+            <div class="card animate-in" style="animation-delay: 0.5s;">
+                <div class="card-header">
+                    <div class="card-number">5</div>
+                    <h2 class="card-title">Hybrid Model (Base + Commission)</h2>
+                    <p class="card-subtitle">Balanced, security with incentive</p>
+                </div>
+                <div class="card-body">
+                    <p><strong>How it Works:</strong> A fixed salary with a commission component based on sales performance.</p>
+                    <div class="section-title">Pros</div>
+                    <ul class="pros">
+                        <li>Ensures income stability while keeping incentives for performance</li>
+                        <li>Attracts experienced sales professionals who seek job security</li>
+                    </ul>
+                    <div class="section-title">Cons</div>
+                    <ul class="cons">
+                        <li>Reduces the direct link between performance and earnings</li>
+                        <li>Can be costly if commissions are not structured properly</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Card 6 -->
+            <div class="card animate-in" style="animation-delay: 0.6s;">
+                <div class="card-header">
+                    <div class="card-number">6</div>
+                    <h2 class="card-title">Commission with Accelerators</h2>
+                    <p class="card-subtitle">High-powered, performance-driven</p>
+                </div>
+                <div class="card-body">
+                    <p><strong>How it Works:</strong> Higher commission rates apply once a certain threshold is exceeded (e.g., 5% up to ₹10L, 15% after ₹20L).</p>
+                    <div class="section-title">Pros</div>
+                    <ul class="pros">
+                        <li>Highly motivating for top performers</li>
+                        <li>Drives aggressive sales behavior</li>
+                    </ul>
+                    <div class="section-title">Cons</div>
+                    <ul class="cons">
+                        <li>Complex structure for payroll calculations</li>
+                        <li>Can lead to salespeople delaying deals to cross into higher tiers</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Card 7 -->
+            <div class="card animate-in" style="animation-delay: 0.7s;">
+                <div class="card-header">
+                    <div class="card-number">7</div>
+                    <h2 class="card-title">Customer Retention-Based Commission</h2>
+                    <p class="card-subtitle">Relationship-focused, long-term oriented</p>
+                </div>
+                <div class="card-body">
+                    <p><strong>How it Works:</strong> Salespeople earn commission based on client retention or repeat purchases.</p>
+                    <div class="section-title">Pros</div>
+                    <ul class="pros">
+                        <li>Encourages long-term relationships rather than one-time sales</li>
+                        <li>Reduces churn and improves customer lifetime value</li>
+                    </ul>
+                    <div class="section-title">Cons</div>
+                    <ul class="cons">
+                        <li>Payouts are delayed, which may demotivate some salespeople</li>
+                        <li>May not work in industries with one-time sales cycles</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Card 8 -->
+            <div class="card animate-in" style="animation-delay: 0.8s;">
+                <div class="card-header">
+                    <div class="card-number">8</div>
+                    <h2 class="card-title">Milestone-Based Commission</h2>
+                    <p class="card-subtitle">Process-oriented, staged incentives</p>
+                </div>
+                <div class="card-body">
+                    <p><strong>How it Works:</strong> Commission is earned at different stages of the sales process (e.g., lead qualification, demo completion, contract signing).</p>
+                    <div class="section-title">Pros</div>
+                    <ul class="pros">
+                        <li>Motivates salespeople throughout the sales cycle</li>
+                        <li>Reduces risk of deals getting stuck at late stages</li>
+                    </ul>
+                    <div class="section-title">Cons</div>
+                    <ul class="cons">
+                        <li>Complicated to track and administer</li>
+                        <li>Requires clear definitions for each milestone</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Card 9 -->
+            <div class="card animate-in" style="animation-delay: 0.9s;">
+                <div class="card-header">
+                    <div class="card-number">9</div>
+                    <h2 class="card-title">Weighted Product/Service Commission</h2>
+                    <p class="card-subtitle">Strategic, priority-focused</p>
+                </div>
+                <div class="card-body">
+                    <p><strong>How it Works:</strong> Higher commission rates for strategic or high-priority products (e.g., 10% on new products, 5% on old ones).</p>
+                    <div class="section-title">Pros</div>
+                    <ul class="pros">
+                        <li>Aligns sales efforts with business goals</li>
+                        <li>Encourages adoption of new or high-margin offerings</li>
+                    </ul>
+                    <div class="section-title">Cons</div>
+                    <ul class="cons">
+                        <li>May divert attention from other important products</li>
+                        <li>Requires frequent adjustments to commission structure</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Card 10 -->
+            <div class="card animate-in" style="animation-delay: 1s;">
+                <div class="card-header">
+                    <div class="card-number">10</div>
+                    <h2 class="card-title">Salary with Quarterly Bonus</h2>
+                    <p class="card-subtitle">Stable, goal-oriented</p>
+                </div>
+                <div class="card-body">
+                    <p><strong>How it Works:</strong> Fixed salary with a quarterly bonus based on achieving pre-set KPIs.</p>
+                    <div class="section-title">Pros</div>
+                    <ul class="pros">
+                        <li>Provides income stability</li>
+                        <li>Encourages long-term goal setting rather than short-term push</li>
+                    </ul>
+                    <div class="section-title">Cons</div>
+                    <ul class="cons">
+                        <li>Less immediate motivation compared to commission-based models</li>
+                        <li>Can lead to complacency if not structured well</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Recommendation Section -->
+        <div class="recommendation animate-in" style="animation-delay: 1.1s;">
+            <h2>Recommendation</h2>
+            <p>
+                The best model depends on your industry, sales cycle, and business goals. If short-term revenue growth is the focus, a tiered or accelerator model works well. If customer retention is key, a retention-based or profit-based commission is better. You can also combine models to balance stability and motivation.
+            </p>
+        </div>
+    </div>
+    
+    <footer>
+        <p>© 2025 Sales Commission Structure Guide</p>
+    </footer>
+    
+    <script>
+        // Simple animation script to load cards with slight delay
+        document.addEventListener('DOMContentLoaded', function() {
+            const animatedElements = document.querySelectorAll('.animate-in');
+            
+            function checkPosition() {
+                for (let i = 0; i < animatedElements.length; i++) {
+                    const element = animatedElements[i];
+                    const positionFromTop = element.getBoundingClientRect().top;
+                    
+                    if (positionFromTop - window.innerHeight <= 0) {
+                        element.style.animationPlayState = 'running';
+                    }
+                }
+            }
+            
+            window.addEventListener('scroll', checkPosition);
+            checkPosition();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Compensation Strategy Comparison</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #3498db;
+            --secondary: #2ecc71;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --dark: #34495e;
+            --light: #ecf0f1;
+            --gray: #95a5a6;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--dark));
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            margin: 0;
+            font-size: 36px;
+        }
+        
+        .subtitle {
+            font-size: 18px;
+            opacity: 0.9;
+            margin-top: 10px;
+        }
+        
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 30px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            min-width: 200px;
+        }
+        
+        .filter-label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--dark);
+        }
+        
+        select, input {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        
+        .search-box {
+            flex-grow: 1;
+        }
+        
+        .reset-btn {
+            background-color: var(--gray);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            align-self: flex-end;
+        }
+        
+        .reset-btn:hover {
+            background-color: #7f8c8d;
+        }
+        
+        .strategies-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+        }
+        
+        .strategy-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .strategy-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-header {
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .strategy-icon {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 24px;
+            color: white;
+            margin-right: 15px;
+        }
+        
+        .strategy-title {
+            font-weight: 600;
+            font-size: 18px;
+            flex-grow: 1;
+            margin: 0;
+        }
+        
+        .card-body {
+            padding: 20px;
+        }
+        
+        .pros-cons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .pros, .cons {
+            padding: 15px;
+            border-radius: 8px;
+        }
+        
+        .pros {
+            background-color: rgba(46, 204, 113, 0.1);
+        }
+        
+        .cons {
+            background-color: rgba(231, 76, 60, 0.1);
+        }
+        
+        .section-title {
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        
+        .pros .section-title {
+            color: var(--secondary);
+        }
+        
+        .cons .section-title {
+            color: var(--danger);
+        }
+        
+        .section-title i {
+            margin-right: 8px;
+        }
+        
+        ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        
+        li {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+        
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 15px;
+        }
+        
+        .tag {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            background-color: #f1f1f1;
+            color: var(--dark);
+        }
+        
+        .complexity-low {
+            background-color: rgba(46, 204, 113, 0.2);
+            color: #27ae60;
+        }
+        
+        .complexity-medium {
+            background-color: rgba(243, 156, 18, 0.2);
+            color: #d35400;
+        }
+        
+        .complexity-high {
+            background-color: rgba(231, 76, 60, 0.2);
+            color: #c0392b;
+        }
+        
+        .timeframe-short {
+            background-color: rgba(52, 152, 219, 0.2);
+            color: #2980b9;
+        }
+        
+        .timeframe-medium {
+            background-color: rgba(155, 89, 182, 0.2);
+            color: #8e44ad;
+        }
+        
+        .timeframe-long {
+            background-color: rgba(52, 73, 94, 0.2);
+            color: #2c3e50;
+        }
+        
+        .focus-individual {
+            background-color: rgba(241, 196, 15, 0.2);
+            color: #f39c12;
+        }
+        
+        .focus-team {
+            background-color: rgba(26, 188, 156, 0.2);
+            color: #16a085;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .strategies-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .pros-cons {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Sales Compensation Strategies</h1>
+            <div class="subtitle">Comparative Analysis of Different Approaches</div>
+        </header>
+        
+        <div class="filters">
+            <div class="filter-group search-box">
+                <label class="filter-label" for="search">Search</label>
+                <input type="text" id="search" placeholder="Search by keyword...">
+            </div>
+            
+            <div class="filter-group">
+                <label class="filter-label" for="complexity">Complexity</label>
+                <select id="complexity">
+                    <option value="all">All Complexity Levels</option>
+                    <option value="low">Low</option>
+                    <option value="medium">Medium</option>
+                    <option value="high">High</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label class="filter-label" for="focus">Focus</label>
+                <select id="focus">
+                    <option value="all">All Focus Areas</option>
+                    <option value="individual">Individual Performance</option>
+                    <option value="team">Team Collaboration</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label class="filter-label" for="timeframe">Timeframe</label>
+                <select id="timeframe">
+                    <option value="all">All Timeframes</option>
+                    <option value="short">Short-term</option>
+                    <option value="medium">Medium-term</option>
+                    <option value="long">Long-term</option>
+                </select>
+            </div>
+            
+            <button class="reset-btn" id="resetFilters">
+                <i class="fas fa-sync-alt"></i> Reset Filters
+            </button>
+        </div>
+        
+        <div class="strategies-container" id="strategiesContainer">
+            <!-- Strategy 1 -->
+            <div class="strategy-card" data-complexity="medium" data-focus="individual" data-timeframe="short">
+                <div class="card-header">
+                    <div class="strategy-icon" style="background-color: #3498db;">
+                        <i class="fas fa-layer-group"></i>
+                    </div>
+                    <h3 class="strategy-title">Tiered Commission Structure</h3>
+                </div>
+                <div class="card-body">
+                    <div class="pros-cons">
+                        <div class="pros">
+                            <h4 class="section-title"><i class="fas fa-thumbs-up"></i> Pros</h4>
+                            <ul>
+                                <li>Motivates high performers to exceed targets</li>
+                                <li>Rewards incremental growth at different levels</li>
+                                <li>Creates clear performance milestones</li>
+                            </ul>
+                        </div>
+                        <div class="cons">
+                            <h4 class="section-title"><i class="fas fa-thumbs-down"></i> Cons</h4>
+                            <ul>
+                                <li>May create a "sandbagging" effect if reps slow down after hitting a tier</li>
+                                <li>More complex to administer</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="tags">
+                        <span class="tag complexity-medium">Medium Complexity</span>
+                        <span class="tag focus-individual">Individual Focus</span>
+                        <span class="tag timeframe-short">Short-term</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Strategy 2 -->
+            <div class="strategy-card" data-complexity="medium" data-focus="individual" data-timeframe="medium">
+                <div class="card-header">
+                    <div class="strategy-icon" style="background-color: #2ecc71;">
+                        <i class="fas fa-boxes"></i>
+                    </div>
+                    <h3 class="strategy-title">Product Mix/Category-Based Commission</h3>
+                </div>
+                <div class="card-body">
+                    <div class="pros-cons">
+                        <div class="pros">
+                            <h4 class="section-title"><i class="fas fa-thumbs-up"></i> Pros</h4>
+                            <ul>
+                                <li>Encourages focus on strategic or higher-margin products</li>
+                                <li>Aligns sales force efforts with company priorities</li>
+                            </ul>
+                        </div>
+                        <div class="cons">
+                            <h4 class="section-title"><i class="fas fa-thumbs-down"></i> Cons</h4>
+                            <ul>
+                                <li>May reduce focus on lower-margin products (even if they are essential)</li>
+                                <li>Requires consistent tracking of different product categories</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="tags">
+                        <span class="tag complexity-medium">Medium Complexity</span>
+                        <span class="tag focus-individual">Individual Focus</span>
+                        <span class="tag timeframe-medium">Medium-term</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Strategy 3 -->
+            <div class="strategy-card" data-complexity="high" data-focus="individual" data-timeframe="medium">
+                <div class="card-header">
+                    <div class="strategy-icon" style="background-color: #f39c12;">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="strategy-title">Profitability-Focused Commission</h3>
+                </div>
+                <div class="card-body">
+                    <div class="pros-cons">
+                        <div class="pros">
+                            <h4 class="section-title"><i class="fas fa-thumbs-up"></i> Pros</h4>
+                            <ul>
+                                <li>Drives sales of higher-margin deals</li>
+                                <li>Aligns rep incentives closely with profitability goals</li>
+                            </ul>
+                        </div>
+                        <div class="cons">
+                            <h4 class="section-title"><i class="fas fa-thumbs-down"></i> Cons</h4>
+                            <ul>
+                                <li>Complex to implement if cost/margin data is not readily available</li>
+                                <li>Reps may ignore lower-profit but strategically important deals</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="tags">
+                        <span class="tag complexity-high">High Complexity</span>
+                        <span class="tag focus-individual">Individual Focus</span>
+                        <span class="tag timeframe-medium">Medium-term</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Strategy 4 -->
+            <div class="strategy-card" data-complexity="medium" data-focus="individual" data-timeframe="short">
+                <div class="card-header">
+                    <div class="strategy-icon" style="background-color: #e74c3c;">
+                        <i class="fas fa-arrow-up"></i>
+                    </div>
+                    <h3 class="strategy-title">Commission for Cross-Selling/Upselling</h3>
+                </div>
+                <div class="card-body">
+                    <div class="pros-cons">
+                        <div class="pros">
+                            <h4 class="section-title"><i class="fas fa-thumbs-up"></i> Pros</h4>
+                            <ul>
+                                <li>Boosts average deal size</li>
+                                <li>Builds deeper customer relationships</li>
+                                <li>Encourages reps to fully understand the product suite</li>
+                            </ul>
+                        </div>
+                        <div class="cons">
+                            <h4 class="section-title"><i class="fas fa-thumbs-down"></i> Cons</h4>
+                            <ul>
+                                <li>Can lead to overly pushy sales tactics that negatively impact customer satisfaction</li>
+                                <li>May detract from quick, straightforward sales if not balanced</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="tags">
+                        <span class="tag complexity-medium">Medium Complexity</span>
+                        <span class="tag focus-individual">Individual Focus</span>
+                        <span class="tag timeframe-short">Short-term</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Strategy 5 -->
+            <div class="strategy-card" data-complexity="medium" data-focus="team" data-timeframe="medium">
+                <div class="card-header">
+                    <div class="strategy-icon" style="background-color: #9b59b6;">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="strategy-title">Team-Based or Pool Commission</h3>
+                </div>
+                <div class="card-body">
+                    <div class="pros-cons">
+                        <div class="pros">
+                            <h4 class="section-title"><i class="fas fa-thumbs-up"></i> Pros</h4>
+                            <ul>
+                                <li>Encourages collaboration and knowledge sharing</li>
+                                <li>Rewards overall team performance</li>
+                            </ul>
+                        </div>
+                        <div class="cons">
+                            <h4 class="section-title"><i class="fas fa-thumbs-down"></i> Cons</h4>
+                            <ul>
+                                <li>High performers may feel under-rewarded if others underperform</li>
+                                <li>Hard to measure individual contributions within a team</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="tags">
+                        <span class="tag complexity-medium">Medium Complexity</span>
+                        <span class="tag focus-team">Team Focus</span>
+                        <span class="tag timeframe-medium">Medium-term</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Strategy 6 -->
+            <div class="strategy-card" data-complexity="high" data-focus="individual" data-timeframe="long">
+                <div class="card-header">
+                    <div class="strategy-icon" style="background-color: #1abc9c;">
+                        <i class="fas fa-sync"></i>
+                    </div>
+                    <h3 class="strategy-title">Recurring Revenue/Retention Commission</h3>
+                </div>
+                <div class="card-body">
+                    <div class="pros-cons">
+                        <div class="pros">
+                            <h4 class="section-title"><i class="fas fa-thumbs-up"></i> Pros</h4>
+                            <ul>
+                                <li>Incentivizes long-term customer satisfaction and renewals</li>
+                                <li>Stabilizes income for both company and reps</li>
+                            </ul>
+                        </div>
+                        <div class="cons">
+                            <h4 class="section-title"><i class="fas fa-thumbs-down"></i> Cons</h4>
+                            <ul>
+                                <li>Might dilute focus on immediate new sales</li>
+                                <li>Complicated to track if renewals depend on multiple factors outside the rep's control</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="tags">
+                        <span class="tag complexity-high">High Complexity</span>
+                        <span class="tag focus-individual">Individual Focus</span>
+                        <span class="tag timeframe-long">Long-term</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Strategy 7 -->
+            <div class="strategy-card" data-complexity="low" data-focus="individual" data-timeframe="short">
+                <div class="card-header">
+                    <div class="strategy-icon" style="background-color: #34495e;">
+                        <i class="fas fa-tasks"></i>
+                    </div>
+                    <h3 class="strategy-title">Activity-Based Bonuses</h3>
+                </div>
+                <div class="card-body">
+                    <div class="pros-cons">
+                        <div class="pros">
+                            <h4 class="section-title"><i class="fas fa-thumbs-up"></i> Pros</h4>
+                            <ul>
+                                <li>Reinforces important sales behaviors (e.g., demos, calls, follow-ups)</li>
+                                <li>Helps build consistent sales pipelines</li>
+                            </ul>
+                        </div>
+                        <div class="cons">
+                            <h4 class="section-title"><i class="fas fa-thumbs-down"></i> Cons</h4>
+                            <ul>
+                                <li>Activity without results can be costly</li>
+                                <li>Requires careful definition of valuable activities and measurement tools</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="tags">
+                        <span class="tag complexity-low">Low Complexity</span>
+                        <span class="tag focus-individual">Individual Focus</span>
+                        <span class="tag timeframe-short">Short-term</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Strategy 8 -->
+            <div class="strategy-card" data-complexity="medium" data-focus="individual" data-timeframe="short">
+                <div class="card-header">
+                    <div class="strategy-icon" style="background-color: #f1c40f;">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3 class="strategy-title">Accelerated Monthly/Quarterly Commission</h3>
+                </div>
+                <div class="card-body">
+                    <div class="pros-cons">
+                        <div class="pros">
+                            <h4 class="section-title"><i class="fas fa-thumbs-up"></i> Pros</h4>
+                            <ul>
+                                <li>Spurs earlier and more intense effort</li>
+                                <li>Motivates reps to stay consistently ahead of targets</li>
+                            </ul>
+                        </div>
+                        <div class="cons">
+                            <h4 class="section-title"><i class="fas fa-thumbs-down"></i> Cons</h4>
+                            <ul>
+                                <li>May lead to short-term spike in activity and potential "sales drop" in subsequent periods</li>
+                                <li>Can complicate commission calculations and forecasting</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="tags">
+                        <span class="tag complexity-medium">Medium Complexity</span>
+                        <span class="tag focus-individual">Individual Focus</span>
+                        <span class="tag timeframe-short">Short-term</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Strategy 9 -->
+            <div class="strategy-card" data-complexity="low" data-focus="individual" data-timeframe="medium">
+                <div class="card-header">
+                    <div class="strategy-icon" style="background-color: #16a085;">
+                        <i class="fas fa-balance-scale"></i>
+                    </div>
+                    <h3 class="strategy-title">Hybrid Base + Variable Pay</h3>
+                </div>
+                <div class="card-body">
+                    <div class="pros-cons">
+                        <div class="pros">
+                            <h4 class="section-title"><i class="fas fa-thumbs-up"></i> Pros</h4>
+                            <ul>
+                                <li>Offers income stability while maintaining performance incentives</li>
+                                <li>Can use multipliers for specific metrics (customer satisfaction, short sales cycle, etc.)</li>
+                            </ul>
+                        </div>
+                        <div class="cons">
+                            <h4 class="section-title"><i class="fas fa-thumbs-down"></i> Cons</h4>
+                            <ul>
+                                <li>Might create a sense of entitlement to the base pay</li>
+                                <li>Balancing the base vs. variable portion can be tricky</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="tags">
+                        <span class="tag complexity-low">Low Complexity</span>
+                        <span class="tag focus-individual">Individual Focus</span>
+                        <span class="tag timeframe-medium">Medium-term</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Strategy 10 -->
+            <div class="strategy-card" data-complexity="medium" data-focus="individual" data-timeframe="medium">
+                <div class="card-header">
+                    <div class="strategy-icon" style="background-color: #3498db;">
+                        <i class="fas fa-flag-checkered"></i>
+                    </div>
+                    <h3 class="strategy-title">Milestone-Based Bonuses</h3>
+                </div>
+                <div class="card-body">
+                    <div class="pros-cons">
+                        <div class="pros">
+                            <h4 class="section-title"><i class="fas fa-thumbs-up"></i> Pros</h4>
+                            <ul>
+                                <li>Drives specific strategic goals (new market entry, target accounts, product launches)</li>
+                                <li>Allows for flexibility in shifting priorities</li>
+                            </ul>
+                        </div>
+                        <div class="cons">
+                            <h4 class="section-title"><i class="fas fa-thumbs-down"></i> Cons</h4>
+                            <ul>
+                                <li>May be harder to define or track certain milestones</li>
+                                <li>Could distract from core revenue-generating activities if milestones are overly specific or too numerous</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="tags">
+                        <span class="tag complexity-medium">Medium Complexity</span>
+                        <span class="tag focus-individual">Individual Focus</span>
+                        <span class="tag timeframe-medium">Medium-term</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const strategiesContainer = document.getElementById('strategiesContainer');
+            const cards = strategiesContainer.querySelectorAll('.strategy-card');
+            const searchInput = document.getElementById('search');
+            const complexityFilter = document.getElementById('complexity');
+            const focusFilter = document.getElementById('focus');
+            const timeframeFilter = document.getElementById('timeframe');
+            const resetButton = document.getElementById('resetFilters');
+            
+            function filterCards() {
+                const searchTerm = searchInput.value.toLowerCase();
+                const complexity = complexityFilter.value;
+                const focus = focusFilter.value;
+                const timeframe = timeframeFilter.value;
+                
+                cards.forEach(card => {
+                    const title = card.querySelector('.strategy-title').textContent.toLowerCase();
+                    const cardText = card.textContent.toLowerCase();
+                    const cardComplexity = card.dataset.complexity;
+                    const cardFocus = card.dataset.focus;
+                    const cardTimeframe = card.dataset.timeframe;
+                    
+                    const matchesSearch = !searchTerm || cardText.includes(searchTerm);
+                    const matchesComplexity = complexity === 'all' || cardComplexity === complexity;
+                    const matchesFocus = focus === 'all' || cardFocus === focus;
+                    const matchesTimeframe = timeframe === 'all' || cardTimeframe === timeframe;
+                    
+                    if (matchesSearch && matchesComplexity && matchesFocus && matchesTimeframe) {
+                        card.classList.remove('hidden');
+                    } else {
+                        card.classList.add('hidden');
+                    }
+                });
+            }
+            
+            searchInput.addEventListener('input', filterCards);
+            complexityFilter.addEventListener('change', filterCards);
+            focusFilter.addEventListener('change', filterCards);
+            timeframeFilter.addEventListener('change', filterCards);
+            
+            resetButton.addEventListener('click', function() {
+                searchInput.value = '';
+                complexityFilter.value = 'all';
+                focusFilter.value = 'all';
+                timeframeFilter.value = 'all';
+                filterCards();
+            });
+        });
+    </script>
+</body>
+</html>

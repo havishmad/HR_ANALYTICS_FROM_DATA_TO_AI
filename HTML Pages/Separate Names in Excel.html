@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excel Formula Methods for Name Extraction</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f7fa;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            background-color: #0078d4;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            margin: 0;
+            font-size: 2.2rem;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-top: 10px;
+        }
+        
+        .formula-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .formula-table th {
+            background-color: #0078d4;
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+        
+        .formula-table td {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .formula-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        .formula-table tr:hover {
+            background-color: #f0f5ff;
+        }
+        
+        .method-number {
+            font-weight: bold;
+            color: #0078d4;
+        }
+        
+        .formula-code {
+            font-family: Consolas, Monaco, 'Andale Mono', monospace;
+            background-color: #f5f5f5;
+            padding: 3px 6px;
+            border-radius: 3px;
+            border: 1px solid #ddd;
+            font-size: 0.9em;
+        }
+        
+        .compatibility {
+            text-align: center;
+            font-size: 0.9em;
+        }
+        
+        .compatibility-all {
+            color: #107C10;
+        }
+        
+        .compatibility-limited {
+            color: #8f6a00;
+        }
+        
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 0.9em;
+            color: #666;
+        }
+        
+        .function-link {
+            color: #0078d4;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .function-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Excel Formula Methods for Name Extraction</h1>
+        <div class="subtitle">Different approaches to extract first and last names in Excel</div>
+    </header>
+    
+    <table class="formula-table">
+        <thead>
+            <tr>
+                <th>Method</th>
+                <th>Formula for First Name</th>
+                <th>Formula for Last Name</th>
+                <th>Compatibility</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><span class="method-number">1.</span> LEFT & RIGHT with FIND</td>
+                <td><span class="formula-code">=LEFT(A2, FIND(" ", A2)-1)</span></td>
+                <td><span class="formula-code">LEFT & RIGHT with FIND</span></td>
+                <td class="compatibility"><span class="compatibility-all">Works in all Excel versions</span></td>
+            </tr>
+            <tr>
+                <td><span class="method-number">2.</span> TEXTBEFORE & TEXTAFTER</td>
+                <td><span class="formula-code">=TEXTBEFORE(A2," ")</span></td>
+                <td><span class="formula-code">LEFT & RIGHT with FIND</span></td>
+                <td class="compatibility"><span class="compatibility-limited">Excel 365 & Excel 2021</span></td>
+            </tr>
+            <tr>
+                <td><span class="method-number">3.</span> MID with FIND & LEN</td>
+                <td><span class="formula-code">=LEFT(A2, FIND(" ", A2)-1)</span></td>
+                <td><span class="formula-code">LEFT & RIGHT with FIND</span></td>
+                <td class="compatibility"><span class="compatibility-all">Works in all Excel versions</span></td>
+            </tr>
+            <tr>
+                <td><span class="method-number">4.</span> FILTERXML & SUBSTITUTE</td>
+                <td><span class="formula-code">=FILTERXML("&lt;t&gt;&lt;s&gt;" & SUBSTITUTE(A2," ","&lt;/s&gt;&lt;s&gt;") & "&lt;/s&gt;&lt;/t&gt;","//s[1]")</span></td>
+                <td><span class="formula-code">=FILTERXML("&lt;t&gt;&lt;s&gt;" & SUBSTITUTE(A2," ","&lt;/s&gt;&lt;s&gt;") & "&lt;/s&gt;&lt;/t&gt;","//s[2]")</span></td>
+                <td class="compatibility"><span class="compatibility-limited">Works in Excel 2013+ (with XML functions)</span></td>
+            </tr>
+            <tr>
+                <td><span class="method-number">5.</span> Flash Fill (No Formula)</td>
+                <td><span class="formula-code">Manually type First Name → Press Ctrl + E</span></td>
+                <td><span class="formula-code">Manually type Last Name → Press Ctrl + E</span></td>
+                <td class="compatibility"><span class="compatibility-limited">Works in Excel 2013+</span></td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <footer>
+        <p>Learn more about these Excel functions: 
+            <a href="#" class="function-link">LEFT</a> | 
+            <a href="#" class="function-link">RIGHT</a> | 
+            <a href="#" class="function-link">FIND</a> | 
+            <a href="#" class="function-link">TEXTBEFORE</a> | 
+            <a href="#" class="function-link">TEXTAFTER</a> | 
+            <a href="#" class="function-link">MID</a> | 
+            <a href="#" class="function-link">LEN</a> | 
+            <a href="#" class="function-link">FILTERXML</a> | 
+            <a href="#" class="function-link">SUBSTITUTE</a>
+        </p>
+    </footer>
+</body>
+</html>
