@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>20 Common Challenges in HR Data Cleaning & Preparation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #f0f4f8;
+            color: #334155;
+            padding: 1rem;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .container {
+            max-width: 100%;
+            height: 100%;
+            margin: 0 auto;
+            display: grid;
+            grid-template-rows: auto 1fr;
+            gap: 1rem;
+        }
+        header {
+            text-align: center;
+            padding: 1rem;
+            background-color: #1e40af;
+            color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+        .subtitle {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(5, 1fr);
+            gap: 0.75rem;
+            height: 100%;
+        }
+        .card {
+            background-color: white;
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+            overflow: hidden;
+        }
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        .card-icon {
+            width: 2rem;
+            height: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0.5rem;
+            margin-right: 0.75rem;
+            flex-shrink: 0;
+        }
+        .card-title {
+            font-weight: 600;
+            font-size: 0.9rem;
+            line-height: 1.2;
+        }
+        .card-content {
+            font-size: 0.8rem;
+            line-height: 1.4;
+            flex-grow: 1;
+            overflow: hidden;
+        }
+        .icon-data { background-color: #dbeafe; color: #1e40af; }
+        .icon-missing { background-color: #fee2e2; color: #b91c1c; }
+        .icon-text { background-color: #fef3c7; color: #92400e; }
+        .icon-standard { background-color: #dcfce7; color: #166534; }
+        .icon-error { background-color: #fae8ff; color: #a21caf; }
+    </style>
+    <!-- Import Font Awesome for icons -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>20 Common Challenges in HR Data Cleaning & Preparation</h1>
+            <div class="subtitle">Obstacles that HR analytics teams face when working with workforce data</div>
+        </header>
+        <div class="grid">
+            <!-- Card 1 -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon icon-data">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <div class="card-title">Data Inconsistency Across Sources</div>
+                </div>
+                <div class="card-content">
+                    Employee data resides in silos (e.g., payroll, recruitment, learning systems) with mismatched formats and identifiers.
+                </div>
+            </div>
+            
+            <!-- Card 2 -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon icon-missing">
+                        <i class="fas fa-question-circle"></i>
+                    </div>
+                    <div class="card-title">Missing or Incomplete Data</div>
+                </div>
+                <div class="card-content">
+                    Critical fields like date of exit, job band, or performance ratings are often blank or outdated.
+                </div>
+            </div>
+            
+            <!-- Card 3 -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon icon-text">
+                        <i class="fas fa-align-left"></i>
+                    </div>
+                    <div class="card-title">Unstructured Textual Data</div>
+                </div>
+                <div class="card-content">
+                    Employee feedback, grievances, and exit interviews are often in free-text form, requiring NLP for meaningful analysis.
+                </div>
+            </div>
+            
+            <!-- Card 4 -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon icon-standard">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <div class="card-title">Lack of Standardized Definitions</div>
+                </div>
+                <div class="card-content">
+                    Variations in terminology (e.g., "Resigned" vs "Voluntary Exit") create inconsistencies in classification.
+                </div>
+            </div>
+            
+            <!-- Card 5 -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon icon-error">
+                        <i class="fas fa-keyboard"></i>
+                    </div>
+                    <div class="card-title">Manual Data Entry Errors</div>
+                </div>
+                <div class="card-content">
+                    Free-form entries lead to issues like typos, inconsistent capitalization, or mismatched date formats.
+                </div>
+            </div>
+            
+            <!-- Card 6 -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon icon-data">
+                        <i class="fas fa-copy"></i>
+                    </div>
+                    <div class="card-title">Duplicate Records</div>
+                </div>
+                <div class="card-content">
+                    Redundant employee records arise from HRMS migrations, system errors, or improper de-duplication.
+                </div>
+            </div>
+            
+            <!-- Card 7 -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon icon-missing">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    <div class="card-title">Sensitive Data and Privacy Concerns</div>
+                </div>
+                <div class="card-content">
+                    Sensitive fields like compensation, health records, and PII need masking or encryption before processing.
+                </div>
+            </div>
+            
+            <!-- Card 8 -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon icon-text">
+                        <i class="fas fa-sitemap"></i>
+                    </div>
+                    <div class="card-title">Dynamic Organizational Structures</div>
+                </div>
+                <div class="card-content">
+                    Frequent org changes affect reporting lines, department codes, and manager assignments, complicating hierarchy analysis.
+                </div>
+            </div>
+            
+            <!-- Card 9 -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon icon-standard">
+                        <i class="fas fa-plug"></i>
+                    </div>
+                    <div class="card-title">HRMS Integration Gaps</div>
+                </div>
+                <div class="card-content">
+                    Lack of seamless data flow between systems (e.g., ATS, payroll, performance) limits holistic analysis.
+                </div>
+            </div>
+            
+            <!-- Card 10 -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon icon-error">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="card-title">Time and Resource Constraints</div>
+                </div>
+                <div class="card-content">
+                    HR teams often lack dedicated analysts or automation tools, relying on manual Excel work.
+                </div>
+            </div>
+            
+            <!-- Card 11 -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon icon-data">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <div class="card-title">Inconsistent Time Periods</div>
+                </div>
+                <div class="card-content">
+                    Data collected across varying time frames (monthly, quarterly, annually) disrupt trend analysis.
+                </div>
+            </div>
+            
+            <!-- Card 12 -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon icon-missing">
+                        <i class="fas fa-code-branch"></i>
+                    </div>
+                    <div class="card-title">Poor Version Control</div>
+                </div>
+                <div class="card-content">
+                    Lack of versioning in Excel sheets or reports leads to analysis based on outdated or overwritten data.
+                </div>
+            </div>
+            
+            <!-- Card 13 -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon icon-text">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="card-title">Inadequate Data Validation Rules</div>
+                </div>
+                <div class="card-content">
+                    Absence of pre-defined input validation (e.g., dropdowns, date ranges) leads to invalid entries.
+                </div>
+            </div>
+            
+            <!-- Card 14 -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon icon-standard">
+                        <i class="fas fa-tags"></i>
+                    </div>
+                    <div class="card-title">Mismatch in Coding Conventions</div>
+                </div>
+                <div class="card-content">
+                    Inconsistent job codes, location IDs, or function tags across systems cause joining and grouping issues.
+                </div>
+            </div>
+            
+            <!-- Card 15 -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon icon-error">
+                        <i class="fas fa-archive"></i>
+                    </div>
+                    <div class="card-title">Legacy System Artifacts</div>
+                </div>
+                <div class="card-content">
+                    Older HR systems often export data in incompatible or fragmented formats requiring reformatting.
+                </div>
+            </div>
+            
+            <!-- Card 16 -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon icon-data">
+                        <i class="fas fa-ban"></i>
+                    </div>
+                    <div class="card-title">Inconsistent Use of Null Values</div>
+                </div>
+                <div class="card-content">
+                    Use of "N/A", "-", blank spaces, or "0" to represent missing data leads to ambiguity in filtering and logic.
+                </div>
+            </div>
+            
+            <!-- Card 17 -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon icon-missing">
+                        <i class="fas fa-language"></i>
+                    </div>
+                    <div class="card-title">Language and Localization Issues</div>
+                </div>
+                <div class="card-content">
+                    Multinational datasets may include fields in local languages, date formats, or currencies, needing normalization.
+                </div>
+            </div>
+            
+            <!-- Card 18 -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon icon-text">
+                        <i class="fas fa-font"></i>
+                    </div>
+                    <div class="card-title">Overuse of Free-Text Fields</div>
+                </div>
+                <div class="card-content">
+                    Instead of structured dropdowns, free-text inputs (e.g., "Department") introduce variation and spelling errors.
+                </div>
+            </div>
+            
+            <!-- Card 19 -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon icon-standard">
+                        <i class="fas fa-hourglass-end"></i>
+                    </div>
+                    <div class="card-title">Data Obsolescence</div>
+                </div>
+                <div class="card-content">
+                    Old records (e.g., former employees or outdated job descriptions) not marked as inactive clutter datasets.
+                </div>
+            </div>
+            
+            <!-- Card 20 -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon icon-error">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <div class="card-title">Inadequate Metadata or Documentation</div>
+                </div>
+                <div class="card-content">
+                    Lack of field descriptions, data dictionaries, or change logs hampers understanding and reusability.
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
